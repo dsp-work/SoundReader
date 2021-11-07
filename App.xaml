@@ -1,0 +1,10 @@
+﻿<Application x:Class="SoundReader.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SoundReader"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- 追加する -->
+        <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+    </Application.Resources>
+</Application>

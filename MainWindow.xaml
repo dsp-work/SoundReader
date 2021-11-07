@@ -1,0 +1,41 @@
+﻿<Fluent:RibbonWindow x:Class="SoundReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"                  
+        xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:local="clr-namespace:SoundReader"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="800">
+    <Grid>
+        <Fluent:Ribbon>
+            <Fluent:RibbonTabItem Header="タブ1" KeyTip="T1">
+                <Fluent:RibbonGroupBox
+                   Header="ボタン"
+                   KeyTip="B">
+                    <!-- この中にコントロールを配置する -->
+                    <Fluent:Button Header="大ボタン"
+                   KeyTip="BI"
+                   LargeIcon="./image/icon_113430_256.png"/>
+
+                    <Fluent:Button Header="中ボタン"
+                   KeyTip="MI"
+                   Size="Middle"
+                   Icon="./image/icon_113430_256.png"/>
+
+                    <Fluent:Button Header="小ボタン"
+                   KeyTip="SM"
+                   Size="Small"
+                   Icon="./image/icon_113430_256.png"/>
+
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="タブ2" KeyTip="T2">
+            </Fluent:RibbonTabItem>
+
+            <Fluent:RibbonTabItem Header="タブ3" KeyTip="T3">
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+    </Grid>
+</Fluent:RibbonWindow>
