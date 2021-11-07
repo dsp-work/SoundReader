@@ -29,7 +29,7 @@
                     <Fluent:Button Header="大ボタン"
                    KeyTip="BI"
                    LargeIcon="./image/icon_113430_256.png"/>
-
+        
                     <Fluent:Button Header="中ボタン"
                    KeyTip="MI"
                    Size="Middle"
@@ -50,7 +50,13 @@
             </Fluent:RibbonTabItem>
 
         </Fluent:Ribbon>
+
         <Grid Grid.Row="1">
+            <TextBlock>My first window containing a Ribbon and something else.</TextBlock>
+            <ListBox>
+                <ComboBox x:Name="audio_device_list" Width="120" SelectionChanged="ComboBox_SelectionChanged" IsReadOnly="True"/>
+            </ListBox>
         </Grid>
+
     </Grid>
 </Fluent:RibbonWindow>
