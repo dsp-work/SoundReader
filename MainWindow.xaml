@@ -54,7 +54,7 @@
         <Grid Grid.Row="1">
             <TextBlock>My first window containing a Ribbon and something else.</TextBlock>
             <ListBox>
-                <ComboBox x:Name="audio_device_list" Width="120" SelectionChanged="ComboBox_SelectionChanged" IsReadOnly="True"/>
+                <ComboBox x:Name="audio_device_list" Width="120" SelectionChanged="ComboBox_SelectionChanged" DropDownOpened="audio_device_list_DropDownOpened" IsReadOnly="True"/>
             </ListBox>
         </Grid>
 
