@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Forms;
 
 using Fluent;
 
@@ -31,6 +30,7 @@ namespace SoundReader
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+        int audio_in_device_id = -1;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,10 +50,17 @@ namespace SoundReader
             return deviceList;
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void audio_device_list_DropDownOpened(object sender, EventArgs e)
         {
             List<string> lt = GetDevices();
             audio_device_list.ItemsSource = lt.ToArray();
+        }
+
+        private void audio_device_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            audio_in_device_id = audio_device_list.SelectedIndex;
+            if (audio_in_device_id == -1)
+                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
         }
     }
 
