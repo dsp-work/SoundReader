@@ -8,7 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800">
     <Grid>
-        <Fluent:Ribbon>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Fluent:Ribbon Grid.Row="0">
+            <!--Backstage-->
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
             <Fluent:RibbonTabItem Header="タブ1" KeyTip="T1">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
@@ -36,6 +46,9 @@
 
             <Fluent:RibbonTabItem Header="タブ3" KeyTip="T3">
             </Fluent:RibbonTabItem>
+
         </Fluent:Ribbon>
+
+
     </Grid>
 </Fluent:RibbonWindow>
