@@ -13,11 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 using Fluent;
 
 using NAudio.Wave;
 using NAudio.Codecs;
 using NAudio.CoreAudioApi;
+
 
 
 
@@ -33,8 +35,15 @@ namespace SoundReader
         {
             InitializeComponent();
 
+            // device list update
             List<string> lt = GetDevices();
             audio_device_list.ItemsSource = lt.ToArray();
+
+            // Input volume slider initialize
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
+            Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
+
         }
 
         public List<string> GetDevices()
@@ -59,6 +68,13 @@ namespace SoundReader
             audio_in_device_id = audio_device_list.SelectedIndex;
             if (audio_in_device_id == -1)
                 MessageBox.Show("指定されたAudioデバイスが見つかりません。");
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
+            device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
         }
     }
 
