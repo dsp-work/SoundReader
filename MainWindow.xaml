@@ -54,8 +54,9 @@
         <Grid Grid.Row="1">
             <TextBlock>My first window containing a Ribbon and something else.</TextBlock>
             <ListBox>
-                <ComboBox x:Name="audio_device_list" Width="120" SelectionChanged="ComboBox_SelectionChanged" DropDownOpened="audio_device_list_DropDownOpened" IsReadOnly="True"/>
+                <ComboBox x:Name="audio_device_list" Width="483" SelectionChanged="audio_device_list_SelectionChanged" DropDownOpened="audio_device_list_DropDownOpened" IsReadOnly="True"/>
             </ListBox>
+            <Slider x:Name="Input_volume" Width="120" Margin="94,67,586,-68" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
         </Grid>
 
     </Grid>
