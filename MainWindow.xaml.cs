@@ -20,6 +20,7 @@ using NAudio.Wave;
 using NAudio.Codecs;
 using NAudio.CoreAudioApi;
 
+using Microsoft.Kinect;
 
 
 
