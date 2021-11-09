@@ -66,8 +66,8 @@
             <Label Content="_" Height="30" Margin="605,211,170.6,159"/>
             <TextBox x:Name="Rec_numbering_filename" Height="23" TextWrapping="Wrap" Text="1" Width="120" Margin="636,215,37.6,162" />
             <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120" Margin="470,215,203.6,162"/>
-            <Button x:Name="Rec_num_prev" Content="prev." Width="51" Margin="636,243,106.6,137"/>
-            <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="705,243,37.6,137"/>
+            <Button x:Name="Rec_num_prev" Content="prev." Width="51" Margin="636,243,106.6,137" Click="Rec_num_prev_Click"/>
+            <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="705,243,37.6,137" Click="Rec_num_next_Click"/>
 
             <Button x:Name="Rec_start" Content="Start" Width="75" Margin="509,349,209.6,26" Click="Rec_start_Click"/>
             <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="636,349,82.6,26" Click="Rec_stop_Click"/>
