@@ -126,6 +126,15 @@ namespace SoundReader
                     waveWriter.Flush();
             };
 
+            // freeze control
+            Rec_start.IsEnabled = false;
+            Rec_stop.IsEnabled = true;
+            audio_device_list.IsEnabled = false;
+            Rec_base_filename.IsEnabled = false;
+            Rec_numbering_filename.IsEnabled = false;
+            Rec_num_prev.IsEnabled = false;
+            Rec_num_next.IsEnabled = false;
+
             waveIn.StartRecording();
         }
 
@@ -137,6 +146,16 @@ namespace SoundReader
 
             waveWriter?.Close();
             waveWriter = null;
+
+            // adopt variable
+            Rec_start.IsEnabled = true;
+            Rec_stop.IsEnabled = false;
+            audio_device_list.IsEnabled = true;
+            Rec_base_filename.IsEnabled = true;
+            Rec_numbering_filename.IsEnabled = true;
+            Rec_num_prev.IsEnabled = true;
+            Rec_num_next.IsEnabled = true;
+
 
             Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
         }
