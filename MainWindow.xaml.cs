@@ -111,7 +111,9 @@ namespace SoundReader
             }
             waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
 
-            waveWriter = new WaveFileWriter("test1.wav", waveIn.WaveFormat);
+            var file_base = Rec_base_filename.Text;
+            var file_num = Rec_numbering_filename.Text;
+            waveWriter = new WaveFileWriter($"{file_base}_{file_num}.wav" , waveIn.WaveFormat);
 
             waveIn.DataAvailable += (_, ee) =>
             {
@@ -137,5 +139,4 @@ namespace SoundReader
             waveWriter = null;
         }
     }
-
 }
