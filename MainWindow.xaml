@@ -138,6 +138,7 @@
             <TextBox x:Name="Rec_time" TextWrapping="Wrap" Text="10" Width="120" Margin="636,144,37.6,233" Height="23"/>
             <Label Content="Time" Margin="636,114,71.6,256" Height="30"/>
             <Label x:Name="timecount" Content="-" Margin="50,118,480,33" FontSize="200"/>
+            <Slider x:Name="Input_volume" Width="120" Margin="94,67,586,-68" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
         </Grid>
 
     </Grid>
