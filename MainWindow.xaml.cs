@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -206,5 +207,50 @@ namespace SoundReader
                 save_dir = cofd.FileName;
             }
         }
+        private void Rec_start_optional_Click(object sender, RoutedEventArgs e)
+        {
+            waveIn = new WaveInEvent();
+            waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
+            if (waveIn.DeviceNumber == -1)
+            {
+                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
+                return;
+            }
+            waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
+            var file_base = Rec_base_filename.Text;
+            var file_num = Rec_numbering_filename.Text;
+            waveWriter = new WaveFileWriter($"{file_base}_{file_num}.wav", waveIn.WaveFormat);
+
+            waveIn.DataAvailable += (_, ee) =>
+            {
+                waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
+                waveWriter.Flush();
+            };
+            waveIn.RecordingStopped += (_, __) =>
+            {
+                if (waveWriter != null)
+                    waveWriter.Flush();
+            };
+
+            Rec_time.Text = $"{Int32.Parse(Rec_time.Text)}";
+            if (Rec_time.Text == "0")
+            {
+                waveIn.StartRecording();
+            }
+            else
+            {
+                waveIn.StartRecording();
+                Thread.Sleep(Int32.Parse(Rec_time.Text) * 1000);
+                waveIn?.StopRecording();
+                waveIn?.Dispose();
+                waveIn = null;
+
+                waveWriter?.Close();
+                waveWriter = null;
+
+                Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+            }
+        }
+
     }
 }
