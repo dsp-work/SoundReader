@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -150,6 +151,7 @@ namespace SoundReader
             Rec_numbering_filename.IsEnabled = false;
             Rec_num_prev.IsEnabled = false;
             Rec_num_next.IsEnabled = false;
+            Rec_time.IsEnabled = false;
 
             waveIn.StartRecording();
         }
@@ -171,7 +173,7 @@ namespace SoundReader
             Rec_numbering_filename.IsEnabled = true;
             Rec_num_prev.IsEnabled = true;
             Rec_num_next.IsEnabled = true;
-
+            Rec_time.IsEnabled = true;
 
             Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
         }
@@ -253,5 +255,74 @@ namespace SoundReader
                 Rec_Level_Meter.Value = lv;              
             });
         }
+        private void Rec_start_optional_Click(object sender, RoutedEventArgs e)
+        {
+            waveIn = new WaveInEvent();
+            waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
+            if (waveIn.DeviceNumber == -1)
+            {
+                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
+                return;
+            }
+            waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
+            var file_base = Rec_base_filename.Text;
+            var file_num = Rec_numbering_filename.Text;
+            waveWriter = new WaveFileWriter($"{file_base}_{file_num}.wav", waveIn.WaveFormat);
+
+            waveIn.DataAvailable += (_, ee) =>
+            {
+                waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
+                waveWriter.Flush();
+            };
+            waveIn.RecordingStopped += (_, __) =>
+            {
+                if (waveWriter != null)
+                    waveWriter.Flush();
+            };
+
+            // freeze control
+            Rec_start.IsEnabled = false;
+            Rec_stop.IsEnabled = true;
+            audio_device_list.IsEnabled = false;
+            Rec_base_filename.IsEnabled = false;
+            Rec_numbering_filename.IsEnabled = false;
+            Rec_num_prev.IsEnabled = false;
+            Rec_num_next.IsEnabled = false;
+            Rec_time.IsEnabled = false;
+
+            Rec_time.Text = $"{Int32.Parse(Rec_time.Text)}";
+            if (Rec_time.Text == "0")
+            {
+                waveIn.StartRecording();
+            }
+            else
+            {
+                var sleep_time = Int32.Parse(Rec_time.Text);
+                Task.Run(() =>
+                {
+                    waveIn.StartRecording();
+                    Thread.Sleep(sleep_time * 1000);
+                    waveIn?.StopRecording();
+                    waveIn?.Dispose();
+                    waveIn = null;
+
+                    waveWriter?.Close();
+                    waveWriter = null;
+                });
+
+                Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+
+                // adopt variable
+                Rec_start.IsEnabled = true;
+                Rec_stop.IsEnabled = false;
+                audio_device_list.IsEnabled = true;
+                Rec_base_filename.IsEnabled = true;
+                Rec_numbering_filename.IsEnabled = true;
+                Rec_num_prev.IsEnabled = true;
+                Rec_num_next.IsEnabled = true;
+                Rec_time.IsEnabled = true;
+            }
+        }
+
     }
 }
