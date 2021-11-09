@@ -15,6 +15,14 @@ using System.Windows.Shapes;
 
 using Fluent;
 
+using NAudio.Wave;
+using NAudio.Codecs;
+using NAudio.CoreAudioApi;
+
+using Microsoft.Kinect;
+
+
+
 namespace SoundReader
 {
     /// <summary>

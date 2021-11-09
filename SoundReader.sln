@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundReader", "SoundReader.csproj", "{B74F4D00-8BF2-4689-93FB-D58D61084792}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundReader", "SoundReader.csproj", "{B449D95D-B079-478F-B8BC-2EA65E8B308B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B74F4D00-8BF2-4689-93FB-D58D61084792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B74F4D00-8BF2-4689-93FB-D58D61084792}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B74F4D00-8BF2-4689-93FB-D58D61084792}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B74F4D00-8BF2-4689-93FB-D58D61084792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B449D95D-B079-478F-B8BC-2EA65E8B308B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B449D95D-B079-478F-B8BC-2EA65E8B308B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B449D95D-B079-478F-B8BC-2EA65E8B308B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B449D95D-B079-478F-B8BC-2EA65E8B308B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A339AFA4-E7F8-4423-BF6D-BDCE0CBDA6E3}
+		SolutionGuid = {04C0ECFB-D8C6-41AD-B4FE-896ADEE54658}
 	EndGlobalSection
 EndGlobal
