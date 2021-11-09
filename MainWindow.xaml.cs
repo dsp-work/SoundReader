@@ -72,7 +72,7 @@ namespace SoundReader
             for (int i = 0; i < WaveIn.DeviceCount; i++)
             {
                 var cap = WaveIn.GetCapabilities(i);
-                if (cap.ProductName.Contains(name))
+                if (cap.ProductName.Contains(name.Substring(0, Math.Min(30, name.Length))))
                     return i;
             }
             return -1;
@@ -93,8 +93,10 @@ namespace SoundReader
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            if (audio_device_list.SelectedIndex <= 0)
+                return;
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
-            MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
+            MMDevice device = DevEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray().ElementAt(audio_device_list.SelectedIndex);
             device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
         }
 
@@ -102,6 +104,11 @@ namespace SoundReader
         {
             waveIn = new WaveInEvent();
             waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
+            if (waveIn.DeviceNumber == -1)
+            {
+                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
+                return;
+            }
             waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
 
             waveWriter = new WaveFileWriter("test1.wav", waveIn.WaveFormat);
