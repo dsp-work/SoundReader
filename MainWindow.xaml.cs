@@ -137,6 +137,18 @@ namespace SoundReader
 
             waveWriter?.Close();
             waveWriter = null;
+
+            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+        }
+
+        private void Rec_num_prev_Click(object sender, RoutedEventArgs e)
+        {
+            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) -1}";
+        }
+
+        private void Rec_num_next_Click(object sender, RoutedEventArgs e)
+        {
+            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) +1}";
         }
     }
 }
