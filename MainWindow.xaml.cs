@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Diagnostics;
+using System.Windows.Forms;
 
 using Fluent;
 
@@ -23,6 +25,8 @@ using NAudio.CoreAudioApi;
 using Microsoft.Kinect;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
+
+
 namespace SoundReader
 {
     /// <summary>
@@ -31,7 +35,7 @@ namespace SoundReader
     public partial class MainWindow : RibbonWindow
     {
         int audio_in_device_id = -1;
-        WaveInEvent waveIn;
+        IWaveIn waveIn;
         WaveFileWriter waveWriter;
         string save_dir = Environment.CurrentDirectory;
 
@@ -47,7 +51,6 @@ namespace SoundReader
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
-
         }
 
         public List<string> GetDevices()
@@ -116,14 +119,12 @@ namespace SoundReader
 
         private void Rec_start_Click(object sender, RoutedEventArgs e)
         {
-            waveIn = new WaveInEvent();
-            waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
-            if (waveIn.DeviceNumber == -1)
-            {
-                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
-                return;
-            }
-            waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
+            waveIn = new WasapiCapture(
+                new MMDeviceEnumerator()
+                    .EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
+                    .ToArray()
+                    .ElementAt(audio_device_list.SelectedIndex));
+            waveIn.WaveFormat = new WaveFormat(16000, 4);
 
             var file_base = Rec_base_filename.Text;
             var file_num = Rec_numbering_filename.Text;
