@@ -79,7 +79,7 @@
                 <Fluent:StatusBarItem Title="Left placed item"
                           Value="150"
                           HorizontalAlignment="Left">
-                    <TextBlock Text="  device status" />
+                    <TextBlock Text="  device status :" />
                 </Fluent:StatusBarItem>
 
                 <Separator HorizontalAlignment="Left" />
