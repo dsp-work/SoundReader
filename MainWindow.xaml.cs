@@ -92,6 +92,21 @@ namespace SoundReader
             audio_in_device_id = audio_device_list.SelectedIndex;
             if (audio_in_device_id == -1)
                 MessageBox.Show("指定されたAudioデバイスが見つかりません。");
+
+            MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+            MMDevice device = DevEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray().ElementAt(audio_device_list.SelectedIndex);
+
+            Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
+
+            var local_waveIn = new WasapiCapture(
+                new MMDeviceEnumerator()
+                    .EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
+                    .ToArray()
+                    .ElementAt(audio_device_list.SelectedIndex));
+            Rec_status.Text = $"{device.State}";
+            Rec_ch.Text = $"{device.AudioEndpointVolume.Channels.Count}ch";
+            Rec_bit.Text = $"{local_waveIn.WaveFormat.BitsPerSample}bit";
+            Rec_sample.Text = $"{local_waveIn.WaveFormat.SampleRate}Hz";
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
