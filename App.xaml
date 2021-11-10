@@ -4,6 +4,16 @@
              xmlns:local="clr-namespace:SoundReader"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+        <!--color definitions-->
+        <ResourceDictionary>
+            <Color x:Key="light_green">#ccff66</Color>
+            <Color x:Key="scarlet">#d3381c</Color>
+            <Color x:Key="wisteria">#a15dc4</Color>
+            <Color x:Key="lilac">#ff7058a3</Color>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="/TabControlMenu.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
