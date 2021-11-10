@@ -100,7 +100,7 @@ namespace SoundReader
                 return;
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray().ElementAt(audio_device_list.SelectedIndex);
-            device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
+            device.AudioEndpointVolume.MasterVolumeLevel = (float)Input_volume.Value;
         }
 
         private void Rec_start_Click(object sender, RoutedEventArgs e)
@@ -110,7 +110,7 @@ namespace SoundReader
                     .EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
                     .ToArray()
                     .ElementAt(audio_device_list.SelectedIndex));
-            waveIn.WaveFormat = new WaveFormat(16000, 4);
+            //waveIn.WaveFormat = new WaveFormat(16000, 4);
 
             var file_base = Rec_base_filename.Text;
             var file_num = Rec_numbering_filename.Text;
