@@ -1,15 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
 
 using Fluent;
 
 using NAudio.Wave;
 using NAudio.CoreAudioApi;
 using Microsoft.WindowsAPICodePack.Dialogs;
+
+
 
 namespace SoundReader
 {
@@ -18,8 +20,8 @@ namespace SoundReader
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        public int audio_in_device_id = -1;
-        public WaveInEvent waveIn;
+        int audio_in_device_id = -1;
+        public IWaveIn waveIn;
         public WaveFileWriter waveWriter;
         public string save_dir = Environment.CurrentDirectory;
 
@@ -91,7 +93,7 @@ namespace SoundReader
                 return;
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray().ElementAt(audio_device_list.SelectedIndex);
-            device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
+            device.AudioEndpointVolume.MasterVolumeLevel = (float)Input_volume.Value;
         }
 
         private void Button_Click_Workin(object sender, RoutedEventArgs e)

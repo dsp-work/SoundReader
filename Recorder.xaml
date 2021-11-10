@@ -2,7 +2,9 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:rg="clr-namespace:SourceChord.ResponsiveGrid;assembly=ResponsiveGrid.Wpf"
+      xmlns:Fluent="urn:fluent-ribbon"
       xmlns:local="clr-namespace:SoundReader"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -50,11 +52,12 @@
                         Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
                         Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
                         >
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="{StaticResource wisteria}" />
-                        </Rectangle.Fill>
-                    </Rectangle>
-                </Canvas>
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{StaticResource wisteria}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Canvas>
+                </Viewbox>
             </local:NotifyGrid>
             <Grid Name="DisplaySignalLevelMeterArea"  Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" >
@@ -108,7 +111,7 @@
                     </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
-                    <local:ToggleSwitch/>
+                   <!--<local:ToggleSwitch/>-->
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
@@ -118,5 +121,5 @@
                 </Border>
             </rg:ResponsiveGrid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

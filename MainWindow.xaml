@@ -12,10 +12,6 @@
                      >
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
-        <Color x:Key="light_green">#ccff66</Color>
-        <Color x:Key="scarlet">#d3381c</Color>
-        <Color x:Key="wisteria">#a15dc4</Color>
-        <Color x:Key="lilac">#7058a3</Color>
     </Window.Resources>
 
     <Grid>
@@ -46,6 +42,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
 
@@ -185,7 +182,7 @@
                     Background="#FFBFE3FF"
                     BorderThickness="0,0,1,0"
                     BorderBrush="#000000"
-                    Width="{Binding ElementName=TabMenu, Path=ActualWidth}"
+                    Width="Auto"
                     />
                 <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
                     <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>

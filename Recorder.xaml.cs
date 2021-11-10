@@ -220,34 +220,34 @@ namespace SoundReader
             {
                 var current = 100.0 * max;
                 var lv = 0.0;
-                if (mainWindow.Rec_Level_Meter.Value <= current)
+                if (Rec_Level_Meter.Value <= current)
                 {
-                    lv = (0.2 * mainWindow.Rec_Level_Meter.Value + 0.8 * current);
+                    lv = (0.2 * Rec_Level_Meter.Value + 0.8 * current);
                     if (max >= 1.0)
                     {
-                        mainWindow.Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["scarlet"]);
                     }
                     else
                     {
-                        mainWindow.Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["light_green"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["light_green"]);
                     }
                 }
                 else
                 {
-                    lv = (0.8 * mainWindow.Rec_Level_Meter.Value + 0.2 * current);
+                    lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
                     if (max >= 1.0)
                     {
-                        mainWindow.Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["scarlet"]);
                     }
                     else
                     {
                         var color = (Color)Application.Current.Resources["light_green"];
                         color.A = 150;
-                        mainWindow.Rec_Level_Meter.Foreground = new SolidColorBrush(color);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(color);
                     }
                 }
-                mainWindow.Rec_Level_Meter_Value.Text = lv.ToString("0");
-                mainWindow.Rec_Level_Meter.Value = lv;
+                Rec_Level_Meter_Value.Text = lv.ToString("0");
+                Rec_Level_Meter.Value = lv;
             });
         }
 
