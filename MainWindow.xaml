@@ -21,13 +21,14 @@
             </Fluent:Ribbon.Menu>
 
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="タブ1" KeyTip="T1">
+            <Fluent:RibbonTabItem Header="HOME" KeyTip="T1">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
                    KeyTip="B">
                     <!-- この中にコントロールを配置する -->
-                    <Fluent:Button Header="大ボタン"
+                    <Fluent:Button Header="保存先"
                    KeyTip="BI"
+                   Click="Button_Click_Saveto"
                    LargeIcon="./image/icon_113430_256.png"/>
 
                     <Fluent:Button Header="中ボタン"
