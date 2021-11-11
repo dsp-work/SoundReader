@@ -274,59 +274,6 @@ namespace SoundReader
                         timecount.Content = $"{sleep_time}";
                     }));
                     Thread.Sleep(200);
-                    waveIn?.StopRecording();
-                    waveIn?.Dispose();
-                    waveIn = null;
-
-                    waveWriter?.Close();
-                    waveWriter = null;
-
-                    Rec_numbering_filename.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
-                        }));
-                    // adopt variable
-                    Rec_start.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_start.IsEnabled = true;
-                        }));
-                    Rec_stop.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_stop.IsEnabled = false;
-                        }));
-                    audio_device_list.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            audio_device_list.IsEnabled = true;
-                        }));
-                    Rec_base_filename.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_base_filename.IsEnabled = true;
-                        }));
-                    Rec_numbering_filename.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_numbering_filename.IsEnabled = true;
-                        }));
-                    Rec_num_prev.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_num_prev.IsEnabled = true;
-                        }));
-                    Rec_num_next.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_num_next.IsEnabled = true;
-                        }));
-                    Rec_time.Dispatcher.BeginInvoke(
-                        new Action(() =>
-                        {
-                            Rec_time.IsEnabled = true;
-                        }));
                 });
             }
             else
