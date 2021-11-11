@@ -2,8 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -173,7 +173,6 @@ namespace SoundReader
             Rec_num_prev.IsEnabled = true;
             Rec_num_next.IsEnabled = true;
             Rec_time.IsEnabled = true;
-
 
             Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
         }
