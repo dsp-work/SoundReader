@@ -35,7 +35,6 @@ namespace SoundReader
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        LockTest test = new LockTest();
         int audio_in_device_id = -1;
         IWaveIn waveIn;
         WaveFileWriter waveWriter;
@@ -247,7 +246,9 @@ namespace SoundReader
             {
                 Task.Run(() =>
                 {
-                    for (int i = 3; i > 0; --i)
+                    int i = 0;
+
+                    for (i = 3; i > 0; --i)
                     {
                         //test.Write(i);
                         timecount.Dispatcher.BeginInvoke(
@@ -258,7 +259,7 @@ namespace SoundReader
                         Thread.Sleep(1000);
                     }
                     waveIn.StartRecording();
-                    for (int i = 0; ; ++i)
+                    for (i = 0; ; ++i)
                     {
                         //test.Write(i);
                         timecount.Dispatcher.BeginInvoke(
@@ -267,13 +268,10 @@ namespace SoundReader
                             timecount.Content = $"{i}";
                         }));
                         Thread.Sleep(1000);
+
+                        if (waveIn == null)
+                            return;
                     }
-                    timecount.Dispatcher.BeginInvoke(
-                    new Action(() =>
-                    {
-                        timecount.Content = $"{sleep_time}";
-                    }));
-                    Thread.Sleep(200);
                 });
             }
             else
@@ -290,6 +288,9 @@ namespace SoundReader
                             timecount.Content = $"{i}";
                         }));
                         Thread.Sleep(1000);
+
+                        if (waveIn == null)
+                            return;
                     }
                     waveIn.StartRecording();
                     for (int i = 0; i < sleep_time; ++i)
@@ -301,6 +302,9 @@ namespace SoundReader
                             timecount.Content = $"{i}";
                         }));
                         Thread.Sleep(1000);
+
+                        if (waveIn == null)
+                            return;
                     }
                     timecount.Dispatcher.BeginInvoke(
                     new Action(() =>
@@ -362,33 +366,6 @@ namespace SoundReader
                             Rec_time.IsEnabled = true;
                         }));
                 });
-            }
-        }
-    }
-    public class LockTest
-    {
-        private object lockObj = new object();
-        private int value = 0;
-
-        public void Read()
-        {
-            lock (lockObj)
-            {
-                System.Console.WriteLine(value);
-            }
-        }
-
-        public void ReadImmidiately()
-        {
-            System.Console.WriteLine(value);
-        }
-
-        public void Write(int value)
-        {
-            lock (lockObj)
-            {
-                this.value = value;
-
             }
         }
     }
