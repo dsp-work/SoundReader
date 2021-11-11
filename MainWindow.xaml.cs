@@ -251,17 +251,18 @@ namespace SoundReader
             }
             else
             {
-                waveIn.StartRecording();
+                var sleep_time = Int32.Parse(Rec_time.Text);
                 Task.Run(() =>
                 {
-                    Thread.Sleep(Int32.Parse(Rec_time.Text) * 1000);
-                });
-                waveIn?.StopRecording();
-                waveIn?.Dispose();
-                waveIn = null;
+                    waveIn.StartRecording();
+                    Thread.Sleep(sleep_time * 1000);
+                    waveIn?.StopRecording();
+                    waveIn?.Dispose();
+                    waveIn = null;
 
-                waveWriter?.Close();
-                waveWriter = null;
+                    waveWriter?.Close();
+                    waveWriter = null;
+                });
 
                 Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
 
