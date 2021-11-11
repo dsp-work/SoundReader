@@ -93,11 +93,22 @@
                                      Format="0"
                                      />
                 </Border>
-                <Border rg:ResponsiveGrid.SM="1" >
-                    <Button x:Name="Rec_num_prev" Content="prev." Click="Rec_num_prev_Click"/>
+                <Border rg:ResponsiveGrid.SM="2" >
+                    <WrapPanel Orientation="Horizontal">
+                        <Label Content="time[s] : "/>
+                        <Label Name="time_count" Content="0" FontSize="48"/>
+                    </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
-                    <Button x:Name="Rec_num_next" Content="next" Click="Rec_num_next_Click"/>
+                    <WrapPanel Orientation="Horizontal">
+                        <Label Content="recording time length[s] : "/>
+                        <Fluent:Spinner KeyTip="P1"
+                                     Name="Rec_time"
+                                     Increment="0.1"
+                                     Format="0.0[s]"
+                                     Value="10.0"
+                                     />
+                    </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <local:ToggleSwitch/>
