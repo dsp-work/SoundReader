@@ -150,6 +150,7 @@ namespace SoundReader
             Rec_numbering_filename.IsEnabled = false;
             Rec_num_prev.IsEnabled = false;
             Rec_num_next.IsEnabled = false;
+            Rec_time.IsEnabled = false;
 
             waveIn.StartRecording();
         }
@@ -171,6 +172,7 @@ namespace SoundReader
             Rec_numbering_filename.IsEnabled = true;
             Rec_num_prev.IsEnabled = true;
             Rec_num_next.IsEnabled = true;
+            Rec_time.IsEnabled = true;
 
 
             Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
@@ -232,6 +234,16 @@ namespace SoundReader
                     waveWriter.Flush();
             };
 
+            // freeze control
+            Rec_start.IsEnabled = false;
+            Rec_stop.IsEnabled = true;
+            audio_device_list.IsEnabled = false;
+            Rec_base_filename.IsEnabled = false;
+            Rec_numbering_filename.IsEnabled = false;
+            Rec_num_prev.IsEnabled = false;
+            Rec_num_next.IsEnabled = false;
+            Rec_time.IsEnabled = false;
+
             Rec_time.Text = $"{Int32.Parse(Rec_time.Text)}";
             if (Rec_time.Text == "0")
             {
@@ -240,7 +252,10 @@ namespace SoundReader
             else
             {
                 waveIn.StartRecording();
-                Thread.Sleep(Int32.Parse(Rec_time.Text) * 1000);
+                Task.Run(() =>
+                {
+                    Thread.Sleep(Int32.Parse(Rec_time.Text) * 1000);
+                });
                 waveIn?.StopRecording();
                 waveIn?.Dispose();
                 waveIn = null;
@@ -249,6 +264,16 @@ namespace SoundReader
                 waveWriter = null;
 
                 Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+
+                // adopt variable
+                Rec_start.IsEnabled = true;
+                Rec_stop.IsEnabled = false;
+                audio_device_list.IsEnabled = true;
+                Rec_base_filename.IsEnabled = true;
+                Rec_numbering_filename.IsEnabled = true;
+                Rec_num_prev.IsEnabled = true;
+                Rec_num_next.IsEnabled = true;
+                Rec_time.IsEnabled = true;
             }
         }
 
