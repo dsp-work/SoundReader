@@ -79,6 +79,7 @@
             <Button x:Name="Rec_num_prev" Content="prev." Width="51" Margin="636,243,106.6,137" Click="Rec_num_prev_Click"/>
             <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="705,243,37.6,137" Click="Rec_num_next_Click"/>
 
+            
             <Button x:Name="Rec_start" Content="Start" Width="75" Margin="509,349,209.6,26" Click="Rec_start_optional_Click"/>
             <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="636,349,82.6,26" Click="Rec_stop_Click" IsEnabled="False"/>
 
@@ -133,6 +134,10 @@
                           HorizontalAlignment="Right"
                           Value="Your value which is also used as content if no content is set." />
             </Fluent:StatusBar>
+            
+            <TextBox x:Name="Rec_time" TextWrapping="Wrap" Text="10" Width="120" Margin="367,357,313,29"/>
+            <Label Content="Time" Margin="367,320,341,68" Height="32"/>
+            <Label x:Name="timecount" Content="-" Margin="50,118,480,33" FontSize="200"/>
         </Grid>
 
     </Grid>
