@@ -30,14 +30,17 @@ namespace SoundReader
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        int audio_in_device_id = -1;
-        WaveInEvent waveIn;
-        WaveFileWriter waveWriter;
-        string save_dir = Environment.CurrentDirectory;
+        public int audio_in_device_id = -1;
+        public WaveInEvent waveIn;
+        public WaveFileWriter waveWriter;
+        public string save_dir = Environment.CurrentDirectory;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
+            frame.Source = uri;
 
             // device list update
             List<string> lt = GetDevices();
@@ -64,17 +67,6 @@ namespace SoundReader
                 deviceList.Add(device.FriendlyName);
             }
             return deviceList;
-        }
-
-        public int GetWaveInDeviceID(string name)
-        {
-            for (int i = 0; i < WaveIn.DeviceCount; i++)
-            {
-                var cap = WaveIn.GetCapabilities(i);
-                if (cap.ProductName.Contains(name.Substring(0, Math.Min(30, name.Length))))
-                    return i;
-            }
-            return -1;
         }
 
         private void audio_device_list_DropDownOpened(object sender, EventArgs e)
@@ -114,78 +106,7 @@ namespace SoundReader
             device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
         }
 
-        private void Rec_start_Click(object sender, RoutedEventArgs e)
-        {
-            waveIn = new WaveInEvent();
-            waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
-            if (waveIn.DeviceNumber == -1)
-            {
-                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
-                return;
-            }
-            waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
-
-            var file_base = Rec_base_filename.Text;
-            var file_num = Rec_numbering_filename.Text;
-            waveWriter = new WaveFileWriter($"{save_dir}/{file_base}_{file_num}.wav" , waveIn.WaveFormat);
-
-            waveIn.DataAvailable += (_, ee) =>
-            {
-                waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
-                waveWriter.Flush();
-            };
-            waveIn.DataAvailable += UpdateRecLevelMeter;
-            waveIn.RecordingStopped += (_, __) =>
-            {
-                if (waveWriter != null)
-                    waveWriter.Flush();
-            };
-
-            // freeze control
-            Rec_start.IsEnabled = false;
-            Rec_stop.IsEnabled = true;
-            audio_device_list.IsEnabled = false;
-            Rec_base_filename.IsEnabled = false;
-            Rec_numbering_filename.IsEnabled = false;
-            Rec_num_prev.IsEnabled = false;
-            Rec_num_next.IsEnabled = false;
-
-            waveIn.StartRecording();
-        }
-
-        private void Rec_stop_Click(object sender, RoutedEventArgs e)
-        {
-            waveIn?.StopRecording();
-            waveIn?.Dispose();
-            waveIn = null;
-
-            waveWriter?.Close();
-            waveWriter = null;
-
-            // adopt variable
-            Rec_start.IsEnabled = true;
-            Rec_stop.IsEnabled = false;
-            audio_device_list.IsEnabled = true;
-            Rec_base_filename.IsEnabled = true;
-            Rec_numbering_filename.IsEnabled = true;
-            Rec_num_prev.IsEnabled = true;
-            Rec_num_next.IsEnabled = true;
-
-
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
-        }
-
-        private void Rec_num_prev_Click(object sender, RoutedEventArgs e)
-        {
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) -1}";
-        }
-
-        private void Rec_num_next_Click(object sender, RoutedEventArgs e)
-        {
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) +1}";
-        }
-
-        private void Button_Click_Saveto(object sender, RoutedEventArgs e)
+        private void Button_Click_Workin(object sender, RoutedEventArgs e)
         {
             using (var cofd = new CommonOpenFileDialog()
             {
@@ -207,50 +128,16 @@ namespace SoundReader
             }
         }
 
-        private void UpdateRecLevelMeter(object sender, WaveInEventArgs e)
+        private void Button_Click_Render(object sender, RoutedEventArgs e)
         {
-            var max = 0f;
-            for (var i = 0; i < e.BytesRecorded; i += 2)
-            {
-                var sample = (short)((e.Buffer[i + 1] << 8) | e.Buffer[i + 0]);
-                var sample32 = sample / 32768f;
-                if (sample32 < 0) sample32 = -sample32;
-                if (sample32 > max) max = sample32;
-            }
+            Uri uri = new Uri("/Render.xaml", UriKind.Relative);
+            frame.Source = uri;
+        }
 
-            Dispatcher.Invoke(() =>
-            {
-                var current = 100.0 * max;
-                var lv = 0.0;
-                if (Rec_Level_Meter.Value <= current)
-                {
-                    lv = (0.2 * Rec_Level_Meter.Value + 0.8 * current);
-                    if (max >= 1.0)
-                    {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
-                    }
-                    else
-                    {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["light_green"]);
-                    }
-                }
-                else
-                {
-                    lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
-                    if (max >= 1.0)
-                    {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
-                    }
-                    else
-                    {
-                        var color = (Color)this.Resources["light_green"];
-                        color.A = 150;
-                        Rec_Level_Meter.Foreground = new SolidColorBrush(color);
-                    }
-                }
-                Rec_Level_Meter_Value.Text = lv.ToString("0");
-                Rec_Level_Meter.Value = lv;              
-            });
+        private void Button_Click_Recorder(object sender, RoutedEventArgs e)
+        {
+            Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
+            frame.Source = uri;
         }
     }
 }
