@@ -35,6 +35,7 @@ namespace SoundReader
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+        LockTest test = new LockTest();
         int audio_in_device_id = -1;
         IWaveIn waveIn;
         WaveFileWriter waveWriter;
@@ -210,18 +211,16 @@ namespace SoundReader
         }
         private void Rec_start_optional_Click(object sender, RoutedEventArgs e)
         {
-            waveIn = new WaveInEvent();
-            waveIn.DeviceNumber = GetWaveInDeviceID(audio_device_list.SelectedItem.ToString());
-            if (waveIn.DeviceNumber == -1)
-            {
-                MessageBox.Show("指定されたAudioデバイスが見つかりません。");
-                return;
-            }
-            waveIn.WaveFormat = new WaveFormat(44100, WaveIn.GetCapabilities(waveIn.DeviceNumber).Channels);
+            waveIn = new WasapiCapture(
+                            new MMDeviceEnumerator()
+                                .EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
+                                .ToArray()
+                                .ElementAt(audio_device_list.SelectedIndex));
+            //waveIn.WaveFormat = new WaveFormat(16000, 4);
+
             var file_base = Rec_base_filename.Text;
             var file_num = Rec_numbering_filename.Text;
-            waveWriter = new WaveFileWriter($"{file_base}_{file_num}.wav", waveIn.WaveFormat);
-
+            waveWriter = new WaveFileWriter($"{save_dir}/{file_base}_{file_num}.wav", waveIn.WaveFormat);
             waveIn.DataAvailable += (_, ee) =>
             {
                 waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
@@ -246,36 +245,204 @@ namespace SoundReader
             Rec_time.Text = $"{Int32.Parse(Rec_time.Text)}";
             if (Rec_time.Text == "0")
             {
-                waveIn.StartRecording();
-            }
-            else
-            {
-                var sleep_time = Int32.Parse(Rec_time.Text);
                 Task.Run(() =>
                 {
+                    for (int i = 3; i > 0; --i)
+                    {
+                        //test.Write(i);
+                        timecount.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            timecount.Content = $"{i}";
+                        }));
+                        Thread.Sleep(1000);
+                    }
                     waveIn.StartRecording();
-                    Thread.Sleep(sleep_time * 1000);
+                    for (int i = 0; ; ++i)
+                    {
+                        //test.Write(i);
+                        timecount.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            timecount.Content = $"{i}";
+                        }));
+                        Thread.Sleep(1000);
+                    }
+                    timecount.Dispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        timecount.Content = $"{sleep_time}";
+                    }));
+                    Thread.Sleep(200);
                     waveIn?.StopRecording();
                     waveIn?.Dispose();
                     waveIn = null;
 
                     waveWriter?.Close();
                     waveWriter = null;
+
+                    Rec_numbering_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+                        }));
+                    // adopt variable
+                    Rec_start.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_start.IsEnabled = true;
+                        }));
+                    Rec_stop.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_stop.IsEnabled = false;
+                        }));
+                    audio_device_list.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            audio_device_list.IsEnabled = true;
+                        }));
+                    Rec_base_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_base_filename.IsEnabled = true;
+                        }));
+                    Rec_numbering_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_numbering_filename.IsEnabled = true;
+                        }));
+                    Rec_num_prev.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_num_prev.IsEnabled = true;
+                        }));
+                    Rec_num_next.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_num_next.IsEnabled = true;
+                        }));
+                    Rec_time.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_time.IsEnabled = true;
+                        }));
                 });
+            }
+            else
+            {
+                var sleep_time = Int32.Parse(Rec_time.Text);
+                Task.Run(() =>
+                {
+                    for (int i = 3; i > 0; --i)
+                    {
+                        //test.Write(i);
+                        timecount.Dispatcher.BeginInvoke(
+                        new Action(() => 
+                        {
+                            timecount.Content = $"{i}";
+                        }));
+                        Thread.Sleep(1000);
+                    }
+                    waveIn.StartRecording();
+                    for (int i = 0; i < sleep_time; ++i)
+                    {
+                        //test.Write(i);
+                        timecount.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            timecount.Content = $"{i}";
+                        }));
+                        Thread.Sleep(1000);
+                    }
+                    timecount.Dispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        timecount.Content = $"{sleep_time}";
+                    }));
+                    Thread.Sleep(200);
+                    waveIn?.StopRecording();
+                    waveIn?.Dispose();
+                    waveIn = null;
 
-                Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+                    waveWriter?.Close();
+                    waveWriter = null;
 
-                // adopt variable
-                Rec_start.IsEnabled = true;
-                Rec_stop.IsEnabled = false;
-                audio_device_list.IsEnabled = true;
-                Rec_base_filename.IsEnabled = true;
-                Rec_numbering_filename.IsEnabled = true;
-                Rec_num_prev.IsEnabled = true;
-                Rec_num_next.IsEnabled = true;
-                Rec_time.IsEnabled = true;
+                    Rec_numbering_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+                        }));
+                    // adopt variable
+                    Rec_start.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_start.IsEnabled = true;
+                        }));
+                    Rec_stop.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_stop.IsEnabled = false;
+                        }));
+                    audio_device_list.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            audio_device_list.IsEnabled = true;
+                        }));
+                    Rec_base_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_base_filename.IsEnabled = true;
+                        }));
+                    Rec_numbering_filename.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_numbering_filename.IsEnabled = true;
+                        }));
+                    Rec_num_prev.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_num_prev.IsEnabled = true;
+                        }));
+                    Rec_num_next.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_num_next.IsEnabled = true;
+                        }));
+                    Rec_time.Dispatcher.BeginInvoke(
+                        new Action(() =>
+                        {
+                            Rec_time.IsEnabled = true;
+                        }));
+                });
+            }
+        }
+    }
+    public class LockTest
+    {
+        private object lockObj = new object();
+        private int value = 0;
+
+        public void Read()
+        {
+            lock (lockObj)
+            {
+                System.Console.WriteLine(value);
             }
         }
 
+        public void ReadImmidiately()
+        {
+            System.Console.WriteLine(value);
+        }
+
+        public void Write(int value)
+        {
+            lock (lockObj)
+            {
+                this.value = value;
+
+            }
+        }
     }
 }
