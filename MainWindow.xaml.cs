@@ -23,9 +23,7 @@ using NAudio.Codecs;
 using NAudio.CoreAudioApi;
 
 using Microsoft.Kinect;
-
-
-
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 
 
@@ -39,6 +37,7 @@ namespace SoundReader
         int audio_in_device_id = -1;
         IWaveIn waveIn;
         WaveFileWriter waveWriter;
+        string save_dir = Environment.CurrentDirectory;
 
         public MainWindow()
         {
@@ -129,7 +128,7 @@ namespace SoundReader
 
             var file_base = Rec_base_filename.Text;
             var file_num = Rec_numbering_filename.Text;
-            waveWriter = new WaveFileWriter($"{file_base}_{file_num}.wav" , waveIn.WaveFormat);
+            waveWriter = new WaveFileWriter($"{save_dir}/{file_base}_{file_num}.wav" , waveIn.WaveFormat);
 
             waveIn.DataAvailable += (_, ee) =>
             {
@@ -184,6 +183,28 @@ namespace SoundReader
         private void Rec_num_next_Click(object sender, RoutedEventArgs e)
         {
             Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) +1}";
+        }
+
+        private void Button_Click_Saveto(object sender, RoutedEventArgs e)
+        {
+            using (var cofd = new CommonOpenFileDialog()
+            {
+                Title = "作業フォルダを選択してください",
+
+                // フォルダ選択モードにする
+                IsFolderPicker = true,
+                RestoreDirectory = true,
+            })
+            {
+                if (cofd.ShowDialog() != CommonFileDialogResult.Ok)
+                {
+                    return;
+                }
+
+                // FileNameで選択されたフォルダを取得する
+                System.Windows.MessageBox.Show($"【{cofd.FileName}】を選択しました。");
+                save_dir = cofd.FileName;
+            }
         }
     }
 }
