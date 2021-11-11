@@ -1,0 +1,36 @@
+﻿<Page x:Class="SoundReader.Recorder"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SoundReader"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Recorder">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+        <Label FontSize="50" Grid.Row="0">Page1</Label>
+        <Button Click="Button_Click" Margin="10,161,220,73">ページ２へ遷移</Button>
+        </Grid>
+
+        <Grid Grid.Row="1">
+        <Label Content="Base file name" Height="30" Margin="470,185,232.6,185"/>
+        <Label Content="numbering" Height="30" Margin="636,185,80.6,185"/>
+        <Label Content="_" Height="30" Margin="605,211,170.6,159"/>
+        <TextBox x:Name="Rec_numbering_filename" Height="23" TextWrapping="Wrap" Text="1" Width="120" Margin="636,215,37.6,162" />
+        <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120" Margin="470,215,203.6,162"/>
+        <Button x:Name="Rec_num_prev" Content="prev." Width="51" Margin="636,243,106.6,137" Click="Rec_num_prev_Click"/>
+        <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="705,243,37.6,137" Click="Rec_num_next_Click"/>
+
+        <Button x:Name="Rec_start" Content="Start" Width="75" Margin="509,349,209.6,26" Click="Rec_start_Click"/>
+        <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="636,349,82.6,26" Click="Rec_stop_Click" IsEnabled="False"/>
+        </Grid>
+    </Grid>
+</Page>
