@@ -220,8 +220,34 @@ namespace SoundReader
 
             Dispatcher.Invoke(() =>
             {
-                Rec_Level_Meter_Value.Text = (100 * max).ToString("0");
-                Rec_Level_Meter.Value = 100 * max;
+                var current = 100.0 * max;
+                var lv = 0.0;
+                if (Rec_Level_Meter.Value <= current)
+                {
+                    lv = (0.2 * Rec_Level_Meter.Value + 0.8 * current);
+                    if (max >= 1.0)
+                    {
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(211, 56, 28));
+                    }
+                    else
+                    {
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(204, 255, 102));
+                    }
+                }
+                else
+                {
+                    lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
+                    if (max >= 1.0)
+                    {
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(211, 56, 28));
+                    }
+                    else
+                    {
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromArgb(150, 204, 255, 102));
+                    }
+                }
+                Rec_Level_Meter_Value.Text = lv.ToString("0");
+                Rec_Level_Meter.Value = lv;              
             });
         }
     }
