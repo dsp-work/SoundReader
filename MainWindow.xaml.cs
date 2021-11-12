@@ -32,12 +32,20 @@ namespace SoundReader
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+
     public partial class MainWindow : RibbonWindow
     {
         int audio_in_device_id = -1;
         IWaveIn waveIn;
         WaveFileWriter waveWriter;
         string save_dir = Environment.CurrentDirectory;
+        private bool reading;
+
+        public delegate double ToDoubleBitConverter(byte[] buffer, int startIndex);
+        byte[] audio_buffer;
+
+
 
         public MainWindow()
         {
@@ -156,6 +164,11 @@ namespace SoundReader
 
         private void Rec_stop_Click(object sender, RoutedEventArgs e)
         {
+            WhenToStopRec();
+        }
+
+        private void WhenToStopRec()
+        {
             waveIn?.StopRecording();
             waveIn?.Dispose();
             waveIn = null;
@@ -252,6 +265,86 @@ namespace SoundReader
                 Rec_Level_Meter_Value.Text = lv.ToString("0");
                 Rec_Level_Meter.Value = lv;              
             });
+        private void AudioReadingThread(object sender, WaveInEventArgs e)
+        {
+            // Bottom portion of computed energy signal that will be discarded as noise.
+            // Only portion of signal above noise floor will be displayed.
+            const double EnergyNoiseFloor = 0.2;
+
+            ToDoubleBitConverter converter;
+            var BytesPerSample = waveIn.WaveFormat.BitsPerSample / 8;
+            
+
+            if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.Pcm) {
+                converter = new SpecificBitConverter().FromShort;
+            }
+            else if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat) {
+                converter = new SpecificBitConverter().FromFloat;
+            } else {
+                MessageBox.Show("Unknown WaveIn format types.");
+                if (waveIn != null)
+                {
+                    WhenToStopRec();
+                    return;
+                }
+            }
+            /*
+            while (this.reading)
+            {
+                //int readCount = audioStream.Read(audioBuffer, 0, audioBuffer.Length);
+
+                // Calculate energy corresponding to captured audio.
+                // In a computationally intensive application, do all the processing like
+                // computing energy, filtering, etc. in a separate thread.
+                lock (this.energyLock)
+                {
+                    for (int i = 0; i < readCount; i += 2)
+                    {
+                        // compute the sum of squares of audio samples that will get accumulated
+                        // into a single energy value.
+                        short audioSample = BitConverter.ToInt16(audioBuffer, i);
+                        this.accumulatedSquareSum += audioSample * audioSample;
+                        ++this.accumulatedSampleCount;
+
+                        if (this.accumulatedSampleCount < SamplesPerColumn)
+                        {
+                            continue;
+                        }
+
+                        // Each energy value will represent the logarithm of the mean of the
+                        // sum of squares of a group of audio samples.
+                        double meanSquare = this.accumulatedSquareSum / SamplesPerColumn;
+                        double amplitude = Math.Log(meanSquare) / Math.Log(int.MaxValue);
+
+                        // Renormalize signal above noise floor to [0,1] range.
+                        this.energy[this.energyIndex] = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
+                        this.energyIndex = (this.energyIndex + 1) % this.energy.Length;
+
+                        this.accumulatedSquareSum = 0;
+                        this.accumulatedSampleCount = 0;
+                        ++this.newEnergyAvailable;
+                    }
+                }
+            }*/
+        }
+
+    }
+
+    public class SpecificBitConverter
+    {
+        public double FromDouble(byte[] buffer, int startIndex)
+        {
+            return BitConverter.ToDouble(buffer, startIndex);
+        }
+
+        public double FromShort(byte[] buffer, int startIndex)
+        {
+            return (double)BitConverter.ToInt16(buffer, startIndex);
+        }
+
+        public double FromFloat(byte[] buffer, int startIndex)
+        {
+            return (double)BitConverter.ToSingle(buffer, startIndex);
         }
     }
 }

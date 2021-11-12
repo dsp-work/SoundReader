@@ -19,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Fluent:Ribbon Grid.Row="0">
@@ -61,7 +62,7 @@
         </Fluent:Ribbon>
 
         <Viewbox Grid.Row="1" Stretch="Uniform">
-            <Canvas Width="1" Height="0.52">
+            <Canvas Width="1" Height="0.8">
                 <Image Width="0.74" Height="0.185" x:Name="waveDisplay" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Image.RenderTransform>
                         <TranslateTransform X="0.13" Y="0.0353"/>
@@ -79,16 +80,16 @@
                           IsReadOnly="True"/>
             </ListBox>
 
-            <Label Content="Base file name" Height="30"/>
-            <Label Content="numbering" Height="30" />
-            <Label Content="_" Height="30" />
-            <TextBox x:Name="Rec_numbering_filename" Height="23" TextWrapping="Wrap" Text="1" Width="120"/>
-            <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120"/>
-            <Button x:Name="Rec_num_prev" Content="prev." Width="51" Click="Rec_num_prev_Click"/>
-            <Button x:Name="Rec_num_next" Content="next" Width="51" Click="Rec_num_next_Click"/>
+            <Label Content="Base file name" Height="30" Margin="503,44,199.6,126"/>
+            <Label Content="numbering" Height="30" Margin="651,44,65.6,126"/>
+            <Label Content="_" Height="30" Margin="628,75,147.6,95"/>
+            <TextBox x:Name="Rec_numbering_filename" Height="23" TextWrapping="Wrap" Text="1" Width="120" Margin="651,79,22.6,98" />
+            <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120" Margin="503,79,170.6,98"/>
+            <Button x:Name="Rec_num_prev" Content="prev." Margin="652,102,89.6,77" Click="Rec_num_prev_Click" />
+            <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="720,102,22.6,77" Click="Rec_num_next_Click"/>
 
-            <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
-            <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
+            <Button x:Name="Rec_start" Content="Start" Width="75" Margin="571,147,147.6,32" Click="Rec_start_Click"/>
+            <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="675,147,43.6,32" Click="Rec_stop_Click" IsEnabled="False"/>
 
             <Slider x:Name="Input_volume" Margin="23,96,581.6,275" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
             <ProgressBar x:Name="Rec_Level_Meter" Height="105" Width="26" Margin="61,192,713,116" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
