@@ -27,12 +27,19 @@ namespace SoundReader
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+
     public partial class MainWindow : RibbonWindow
     {
         int audio_in_device_id = -1;
         public IWaveIn waveIn;
         public WaveFileWriter waveWriter;
         public string save_dir = Environment.CurrentDirectory;
+
+        public delegate double ToDoubleBitConverter(byte[] buffer, int startIndex);
+        byte[] audio_buffer;
+
+
 
         public MainWindow()
         {
