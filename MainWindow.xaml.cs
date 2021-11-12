@@ -134,6 +134,7 @@ namespace SoundReader
                 waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
                 waveWriter.Flush();
             };
+            waveIn.DataAvailable += UpdateRecLevelMeter;
             waveIn.RecordingStopped += (_, __) =>
             {
                 if (waveWriter != null)
@@ -204,6 +205,24 @@ namespace SoundReader
                 System.Windows.MessageBox.Show($"【{cofd.FileName}】を選択しました。");
                 save_dir = cofd.FileName;
             }
+        }
+
+        private void UpdateRecLevelMeter(object sender, WaveInEventArgs e)
+        {
+            var max = 0f;
+            for (var i = 0; i < e.BytesRecorded; i += 2)
+            {
+                var sample = (short)((e.Buffer[i + 1] << 8) | e.Buffer[i + 0]);
+                var sample32 = sample / 32768f;
+                if (sample32 < 0) sample32 = -sample32;
+                if (sample32 > max) max = sample32;
+            }
+
+            Dispatcher.Invoke(() =>
+            {
+                Rec_Level_Meter_Value.Text = (100 * max).ToString("0");
+                Rec_Level_Meter.Value = 100 * max;
+            });
         }
     }
 }

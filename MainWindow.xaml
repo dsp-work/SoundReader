@@ -75,6 +75,10 @@
             <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="636,349,82.6,26" Click="Rec_stop_Click" IsEnabled="False"/>
 
             <Slider x:Name="Input_volume" Margin="23,96,581.6,275" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
+            <ProgressBar x:Name="Rec_Level_Meter" Height="105" Width="26" Margin="61,192,713,116" Orientation="Vertical"/>
+            <TextBlock x:Name="Rec_Level_Meter_Value" Height="48" TextWrapping="Wrap" Text="0" Width="42" Margin="100,228,658,137" FontSize="18"/>
+
+
 
             <Fluent:StatusBar Margin="0,379,-0.4,-2" Background="#FFBFE3FF" Height="20">
                 <Fluent:StatusBarItem Title="Left placed item"
