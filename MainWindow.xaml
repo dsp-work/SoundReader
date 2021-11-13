@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:SoundReader"
         xmlns:Fluent="urn:fluent-ribbon" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="800">
+        Title="MainWindow" Height="550" Width="800"
+        Loaded="RibbonWindow_Loaded" Closing="RibbonWindow_Closing">
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
         <Color x:Key="light_green">#ccff66</Color>
         <Color x:Key="scarlet">#d3381c</Color>
         <Color x:Key="wisteria">#a15dc4</Color>

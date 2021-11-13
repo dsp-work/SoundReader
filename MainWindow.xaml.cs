@@ -42,10 +42,29 @@ namespace SoundReader
         string save_dir = Environment.CurrentDirectory;
         private bool reading;
 
+        // for visualize
+        private readonly object energyLock = new object();
+        private double accumulatedSquareSum;
+        private int accumulatedSampleCount;
+        private const int SamplesPerColumn = 40;
+        private readonly double[] energy = new double[(uint)(EnergyBitmapWidth * 1.25)];
+        private int energyIndex;
+        private const int EnergyBitmapWidth = 780;
+        private const int EnergyBitmapHeight = 195;
+        private int newEnergyAvailable;
+
+            // for render
+        private DateTime? lastEnergyRefreshTime;
+        private double energyError;
+        private int energyRefreshIndex;
+        private readonly WriteableBitmap energyBitmap;
+        private readonly Int32Rect fullEnergyRect = new Int32Rect(0, 0, EnergyBitmapWidth, EnergyBitmapHeight);
+        private readonly byte[] backgroundPixels = new byte[EnergyBitmapWidth * EnergyBitmapHeight];
+        private byte[] foregroundPixels;
+
+
+
         public delegate double ToDoubleBitConverter(byte[] buffer, int startIndex);
-        byte[] audio_buffer;
-
-
 
         public MainWindow()
         {
@@ -59,7 +78,46 @@ namespace SoundReader
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
+
+            // Initialize bitmap
+            this.energyBitmap = 
+                new WriteableBitmap(
+                    EnergyBitmapWidth,
+                    EnergyBitmapHeight,
+                    96,
+                    96,
+                    PixelFormats.Indexed1,
+                    new BitmapPalette(
+                        new List<Color> {
+                            Colors.White,
+                            Color.FromRgb(204, 255, 102)
+                        }
+                    )
+                );
         }
+
+        private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Initialize foreground pixels
+            this.foregroundPixels = new byte[EnergyBitmapHeight];
+            for (int i = 0; i < this.foregroundPixels.Length; ++i)
+            {
+                this.foregroundPixels[i] = 0xff;
+            }
+
+            this.waveDisplay.Source = this.energyBitmap;
+
+            CompositionTarget.Rendering += UpdateEnergy;
+        }
+
+        private void RibbonWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (null != this.waveIn)
+            {
+                CompositionTarget.Rendering -= UpdateEnergy;
+            }
+        }
+
 
         public List<string> GetDevices()
         {
@@ -144,6 +202,7 @@ namespace SoundReader
                 waveWriter.Flush();
             };
             waveIn.DataAvailable += UpdateRecLevelMeter;
+            waveIn.DataAvailable += AudioReadingThread;
             waveIn.RecordingStopped += (_, __) =>
             {
                 if (waveWriter != null)
@@ -271,10 +330,9 @@ namespace SoundReader
             // Only portion of signal above noise floor will be displayed.
             const double EnergyNoiseFloor = 0.2;
 
-            ToDoubleBitConverter converter;
             var BytesPerSample = waveIn.WaveFormat.BitsPerSample / 8;
-            
 
+            ToDoubleBitConverter converter = null;
             if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.Pcm) {
                 converter = new SpecificBitConverter().FromShort;
             }
@@ -288,44 +346,96 @@ namespace SoundReader
                     return;
                 }
             }
-            /*
-            while (this.reading)
+
+            //int readCount = audioStream.Read(audioBuffer, 0, audioBuffer.Length);
+            byte[] audioBuffer = new byte[e.Buffer.Length];
+            Buffer.BlockCopy(e.Buffer, 0, audioBuffer, 0, e.Buffer.Length);
+
+            // Calculate energy corresponding to captured audio.
+            // In a computationally intensive application, do all the processing like
+            // computing energy, filtering, etc. in a separate thread.
+            lock (this.energyLock)
             {
-                //int readCount = audioStream.Read(audioBuffer, 0, audioBuffer.Length);
-
-                // Calculate energy corresponding to captured audio.
-                // In a computationally intensive application, do all the processing like
-                // computing energy, filtering, etc. in a separate thread.
-                lock (this.energyLock)
+                for (int i = 0; i < audioBuffer.Length; i += BytesPerSample*waveIn.WaveFormat.Channels)
                 {
-                    for (int i = 0; i < readCount; i += 2)
+                    // compute the sum of squares of audio samples that will get accumulated
+                    // into a single energy value.
+                    double audioSample = short.MaxValue*converter(audioBuffer, i);
+                    this.accumulatedSquareSum += audioSample * audioSample;
+                    ++this.accumulatedSampleCount;
+
+                    if (this.accumulatedSampleCount < SamplesPerColumn)
                     {
-                        // compute the sum of squares of audio samples that will get accumulated
-                        // into a single energy value.
-                        short audioSample = BitConverter.ToInt16(audioBuffer, i);
-                        this.accumulatedSquareSum += audioSample * audioSample;
-                        ++this.accumulatedSampleCount;
-
-                        if (this.accumulatedSampleCount < SamplesPerColumn)
-                        {
-                            continue;
-                        }
-
-                        // Each energy value will represent the logarithm of the mean of the
-                        // sum of squares of a group of audio samples.
-                        double meanSquare = this.accumulatedSquareSum / SamplesPerColumn;
-                        double amplitude = Math.Log(meanSquare) / Math.Log(int.MaxValue);
-
-                        // Renormalize signal above noise floor to [0,1] range.
-                        this.energy[this.energyIndex] = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
-                        this.energyIndex = (this.energyIndex + 1) % this.energy.Length;
-
-                        this.accumulatedSquareSum = 0;
-                        this.accumulatedSampleCount = 0;
-                        ++this.newEnergyAvailable;
+                        continue;
                     }
+
+                    // Each energy value will represent the logarithm of the mean of the
+                    // sum of squares of a group of audio samples.
+                    double meanSquare = this.accumulatedSquareSum / SamplesPerColumn;
+                    double amplitude = Math.Log(meanSquare) / Math.Log(int.MaxValue);
+
+                    // Renormalize signal above noise floor to [0,1] range.
+                    this.energy[this.energyIndex] = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
+                    this.energyIndex = (this.energyIndex + 1) % this.energy.Length;
+
+                    this.accumulatedSquareSum = 0;
+                    this.accumulatedSampleCount = 0;
+                    ++this.newEnergyAvailable;
                 }
-            }*/
+            }
+        }
+
+        private void UpdateEnergy(object sender, EventArgs e)
+        {
+            lock (this.energyLock)
+            {
+                // Calculate how many energy samples we need to advance since the last update in order to
+                // have a smooth animation effect
+                DateTime now = DateTime.UtcNow;
+                DateTime? previousRefreshTime = this.lastEnergyRefreshTime;
+                this.lastEnergyRefreshTime = now;
+
+                if (waveIn == null)
+                    return;
+                double SamplesPerMillisecond = 1e-3 / (double)waveIn.WaveFormat.SampleRate;
+
+                // No need to refresh if there is no new energy available to render
+                if (this.newEnergyAvailable <= 0)
+                {
+                    return;
+                }
+
+                if (previousRefreshTime != null)
+                {
+                    double energyToAdvance = this.energyError + (((now - previousRefreshTime.Value).TotalMilliseconds * SamplesPerMillisecond) / SamplesPerColumn);
+                    int energySamplesToAdvance = Math.Min(this.newEnergyAvailable, (int)Math.Round(energyToAdvance));
+                    this.energyError = energyToAdvance - energySamplesToAdvance;
+                    this.energyRefreshIndex = (this.energyRefreshIndex + energySamplesToAdvance) % this.energy.Length;
+                    this.newEnergyAvailable -= energySamplesToAdvance;
+                }
+
+                // clear background of energy visualization area
+                this.energyBitmap.WritePixels(fullEnergyRect, this.backgroundPixels, EnergyBitmapWidth, 0);
+
+                // Draw each energy sample as a centered vertical bar, where the length of each bar is
+                // proportional to the amount of energy it represents.
+                // Time advances from left to right, with current time represented by the rightmost bar.
+                int baseIndex = (this.energyRefreshIndex + this.energy.Length - EnergyBitmapWidth) % this.energy.Length;
+                for (int i = 0; i < EnergyBitmapWidth; ++i)
+                {
+                    const int HalfImageHeight = EnergyBitmapHeight / 2;
+
+                    // Each bar has a minimum height of 1 (to get a steady signal down the middle) and a maximum height
+                    // equal to the bitmap height.
+                    int barHeight = (int)Math.Max(1.0, (this.energy[(baseIndex + i) % this.energy.Length] * EnergyBitmapHeight));
+
+                    // Center bar vertically on image
+                    var barRect = new Int32Rect(i, HalfImageHeight - (barHeight / 2), 1, barHeight);
+
+                    // Draw bar in foreground color
+                    this.energyBitmap.WritePixels(barRect, foregroundPixels, 1, 0);
+                }
+            }
         }
 
     }
