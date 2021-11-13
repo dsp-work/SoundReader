@@ -227,11 +227,11 @@ namespace SoundReader
                     lv = (0.2 * Rec_Level_Meter.Value + 0.8 * current);
                     if (max >= 1.0)
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(211, 56, 28));
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
                     }
                     else
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(204, 255, 102));
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["light_green"]);
                     }
                 }
                 else
@@ -239,11 +239,13 @@ namespace SoundReader
                     lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
                     if (max >= 1.0)
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromRgb(211, 56, 28));
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
                     }
                     else
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush(Color.FromArgb(150, 204, 255, 102));
+                        var color = (Color)this.Resources["light_green"];
+                        color.A = 150;
+                        Rec_Level_Meter.Foreground = new SolidColorBrush(color);
                     }
                 }
                 Rec_Level_Meter_Value.Text = lv.ToString("0");
