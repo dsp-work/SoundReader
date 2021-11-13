@@ -7,6 +7,14 @@
         xmlns:Fluent="urn:fluent-ribbon" 
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800">
+    <Window.Resources>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
+        <Color x:Key="light_green">#ccff66</Color>
+        <Color x:Key="scarlet">#d3381c</Color>
+        <Color x:Key="wisteria">#a15dc4</Color>
+        <Color x:Key="lilac">#7058a3</Color>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
