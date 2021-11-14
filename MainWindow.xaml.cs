@@ -37,30 +37,31 @@ namespace SoundReader
     public partial class MainWindow : RibbonWindow
     {
         int audio_in_device_id = -1;
-        IWaveIn waveIn;
+        WasapiCapture waveIn;
         WaveFileWriter waveWriter;
-        string save_dir = Environment.CurrentDirectory;
-        private bool reading;
+        string save_dir = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
         // for visualize
         private readonly object energyLock = new object();
         private double accumulatedSquareSum;
         private int accumulatedSampleCount;
-        private const int SamplesPerColumn = 40;
-        private readonly double[] energy = new double[(uint)(EnergyBitmapWidth * 1.25)];
+        private int SamplesPerColumn;
+        private readonly double[] energy = new double[(uint)(EnergyBitmapWidth * 3)];
         private int energyIndex;
         private const int EnergyBitmapWidth = 780;
         private const int EnergyBitmapHeight = 195;
         private int newEnergyAvailable;
 
             // for render
-        private DateTime? lastEnergyRefreshTime;
+        private Stopwatch lastEnergyRefreshTime = new Stopwatch();
         private double energyError;
         private int energyRefreshIndex;
         private readonly WriteableBitmap energyBitmap;
         private readonly Int32Rect fullEnergyRect = new Int32Rect(0, 0, EnergyBitmapWidth, EnergyBitmapHeight);
         private readonly byte[] backgroundPixels = new byte[EnergyBitmapWidth * EnergyBitmapHeight];
         private byte[] foregroundPixels;
+        int frameRate = 120;
+        long elapesd_time = 0;
 
 
 
@@ -89,7 +90,7 @@ namespace SoundReader
                     PixelFormats.Indexed1,
                     new BitmapPalette(
                         new List<Color> {
-                            Colors.White,
+                            Colors.Black,
                             Color.FromRgb(204, 255, 102)
                         }
                     )
@@ -189,20 +190,25 @@ namespace SoundReader
                 new MMDeviceEnumerator()
                     .EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
                     .ToArray()
-                    .ElementAt(audio_device_list.SelectedIndex));
-            //waveIn.WaveFormat = new WaveFormat(16000, 4);
+                    .ElementAt(audio_device_list.SelectedIndex),
+                false,
+                10);
+
+
+            double SamplesPerMillisecond = (double)waveIn.WaveFormat.SampleRate / 1e3;
+            SamplesPerColumn = 300;// (int)(SamplesPerMillisecond * 2.5);
 
             var file_base = Rec_base_filename.Text;
             var file_num = Rec_numbering_filename.Text;
             waveWriter = new WaveFileWriter($"{save_dir}/{file_base}_{file_num}.wav" , waveIn.WaveFormat);
 
+            waveIn.DataAvailable += UpdateRecLevelMeter;
+            waveIn.DataAvailable += AudioReadingThread;
             waveIn.DataAvailable += (_, ee) =>
             {
                 waveWriter.Write(ee.Buffer, 0, ee.BytesRecorded);
                 waveWriter.Flush();
             };
-            waveIn.DataAvailable += UpdateRecLevelMeter;
-            waveIn.DataAvailable += AudioReadingThread;
             waveIn.RecordingStopped += (_, __) =>
             {
                 if (waveWriter != null)
@@ -218,6 +224,7 @@ namespace SoundReader
             Rec_num_prev.IsEnabled = false;
             Rec_num_next.IsEnabled = false;
 
+            lastEnergyRefreshTime.Start();
             waveIn.StartRecording();
         }
 
@@ -282,13 +289,36 @@ namespace SoundReader
 
         private void UpdateRecLevelMeter(object sender, WaveInEventArgs e)
         {
-            var max = 0f;
-            for (var i = 0; i < e.BytesRecorded; i += 2)
+            ToDoubleBitConverter converter = null;
+            if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.Pcm)
             {
-                var sample = (short)((e.Buffer[i + 1] << 8) | e.Buffer[i + 0]);
-                var sample32 = sample / 32768f;
-                if (sample32 < 0) sample32 = -sample32;
-                if (sample32 > max) max = sample32;
+                converter = (byte[] buffer, int startIndex) => {
+                    return new SpecificBitConverter().FromShort(buffer, startIndex) / (double)short.MaxValue;
+                };
+            }
+            else if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat)
+            {
+                converter = new SpecificBitConverter().FromFloat;
+            }
+            else
+            {
+                MessageBox.Show("Unknown WaveIn format types.");
+                if (waveIn != null)
+                {
+                    WhenToStopRec();
+                    return;
+                }
+            }
+
+            var max = 0.0;
+            var BytesPerSample = waveIn.WaveFormat.BitsPerSample / 8;
+
+
+            for (var i = 0; i < e.Buffer.Length; i += BytesPerSample*waveIn.WaveFormat.Channels)
+            {
+                var sample = converter(e.Buffer, i);
+                if (sample < 0) sample = -sample;
+                if (sample > max) max = sample;
             }
 
             Dispatcher.Invoke(() =>
@@ -309,7 +339,7 @@ namespace SoundReader
                 }
                 else
                 {
-                    lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
+                    lv = (0.95 * Rec_Level_Meter.Value + 0.05 * current);
                     if (max >= 1.0)
                     {
                         Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
@@ -322,8 +352,10 @@ namespace SoundReader
                     }
                 }
                 Rec_Level_Meter_Value.Text = lv.ToString("0");
-                Rec_Level_Meter.Value = lv;              
+                Rec_Level_Meter.Value = lv;
             });
+        }
+
         private void AudioReadingThread(object sender, WaveInEventArgs e)
         {
             // Bottom portion of computed energy signal that will be discarded as noise.
@@ -334,7 +366,9 @@ namespace SoundReader
 
             ToDoubleBitConverter converter = null;
             if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.Pcm) {
-                converter = new SpecificBitConverter().FromShort;
+                converter = (byte[] buffer, int startIndex) => {
+                    return new SpecificBitConverter().FromShort(buffer, startIndex) / (double)short.MaxValue;
+                };
             }
             else if (waveIn.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat) {
                 converter = new SpecificBitConverter().FromFloat;
@@ -347,7 +381,6 @@ namespace SoundReader
                 }
             }
 
-            //int readCount = audioStream.Read(audioBuffer, 0, audioBuffer.Length);
             byte[] audioBuffer = new byte[e.Buffer.Length];
             Buffer.BlockCopy(e.Buffer, 0, audioBuffer, 0, e.Buffer.Length);
 
@@ -391,13 +424,21 @@ namespace SoundReader
             {
                 // Calculate how many energy samples we need to advance since the last update in order to
                 // have a smooth animation effect
-                DateTime now = DateTime.UtcNow;
-                DateTime? previousRefreshTime = this.lastEnergyRefreshTime;
-                this.lastEnergyRefreshTime = now;
+                lastEnergyRefreshTime.Stop();
+                elapesd_time += lastEnergyRefreshTime.ElapsedMilliseconds;
+                lastEnergyRefreshTime.Reset();
+                lastEnergyRefreshTime.Start();
+
 
                 if (waveIn == null)
                     return;
-                double SamplesPerMillisecond = 1e-3 / (double)waveIn.WaveFormat.SampleRate;
+                if (elapesd_time > 1)
+                {
+                    this.frameRate = (int)((this.frameRate + 1000.0 / (double)elapesd_time) / 2.0);
+                    this.SamplesPerColumn = (int)((double)waveIn.WaveFormat.SampleRate / (double)frameRate / 1.75);
+                    elapesd_time = 0;
+                }
+                double energyPerMilliseconds = (double)waveIn.WaveFormat.SampleRate / 1000.0 / (double)SamplesPerColumn;
 
                 // No need to refresh if there is no new energy available to render
                 if (this.newEnergyAvailable <= 0)
@@ -405,13 +446,13 @@ namespace SoundReader
                     return;
                 }
 
-                if (previousRefreshTime != null)
+//                if (elapesd_time != 0)
                 {
-                    double energyToAdvance = this.energyError + (((now - previousRefreshTime.Value).TotalMilliseconds * SamplesPerMillisecond) / SamplesPerColumn);
-                    int energySamplesToAdvance = Math.Min(this.newEnergyAvailable, (int)Math.Round(energyToAdvance));
-                    this.energyError = energyToAdvance - energySamplesToAdvance;
-                    this.energyRefreshIndex = (this.energyRefreshIndex + energySamplesToAdvance) % this.energy.Length;
-                    this.newEnergyAvailable -= energySamplesToAdvance;
+                    double energyToAdvance = this.energyError + elapesd_time * energyPerMilliseconds;
+                    int energySamplesToAdvance = Math.Min(this.newEnergyAvailable, (int)Math.Floor(energyToAdvance));
+                    this.energyError = energyToAdvance - (double)energySamplesToAdvance;
+                    this.energyRefreshIndex = (this.energyRefreshIndex + this.newEnergyAvailable) % this.energy.Length;
+                    this.newEnergyAvailable -= this.newEnergyAvailable;
                 }
 
                 // clear background of energy visualization area
