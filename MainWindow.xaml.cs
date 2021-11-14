@@ -114,7 +114,9 @@ namespace SoundReader
                 return;
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray().ElementAt(audio_device_list.SelectedIndex);
+            device.AudioClient.Start();
             device.AudioEndpointVolume.MasterVolumeLevel = (float)Input_volume.Value;
+            device.AudioEndpointVolume.MasterVolumeLevelScalar = (float)Input_volume.Value;
         }
 
         private void Rec_start_Click(object sender, RoutedEventArgs e)
