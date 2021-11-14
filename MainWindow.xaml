@@ -88,6 +88,10 @@
             <TextBlock x:Name="Rec_Level_Meter_Value" Height="48" TextWrapping="Wrap" Text="0" Width="42" Margin="100,228,658,137" FontSize="18"/>
 
 
+            <TextBox x:Name="Rec_time" TextWrapping="Wrap" Text="10" Width="120" Margin="636,144,37.6,233" Height="23"/>
+            <Label Content="Time" Margin="636,114,71.6,256" Height="30"/>
+            <Label x:Name="timecount" Content="-" Margin="50,118,480,33" FontSize="200"/>
+            <Slider x:Name="Input_volume" Width="120" Margin="94,67,586,-68" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
 
             <Fluent:StatusBar Margin="0,379,-0.4,-2" Background="#FFBFE3FF" Height="20">
                 <Fluent:StatusBarItem Title="Left placed item"
@@ -134,12 +138,7 @@
                           HorizontalAlignment="Right"
                           Value="Your value which is also used as content if no content is set." />
             </Fluent:StatusBar>
-            
-            <TextBox x:Name="Rec_time" TextWrapping="Wrap" Text="10" Width="120" Margin="636,144,37.6,233" Height="23"/>
-            <Label Content="Time" Margin="636,114,71.6,256" Height="30"/>
-            <Label x:Name="timecount" Content="-" Margin="50,118,480,33" FontSize="200"/>
-            <Slider x:Name="Input_volume" Width="120" Margin="94,67,586,-68" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
-        </Grid>
+                    </Grid>
 
     </Grid>
 </Fluent:RibbonWindow>
