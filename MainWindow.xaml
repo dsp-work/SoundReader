@@ -83,9 +83,8 @@
             <Button x:Name="Rec_start" Content="Start" Width="75" Margin="502,311,216.6,64" Click="Rec_start_optional_Click"/>
             <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="638,311,80.6,64" Click="Rec_stop_Click" IsEnabled="False"/>
 
-            <Slider x:Name="Input_volume" Margin="23,96,581.6,275" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01"/>
-            <ProgressBar x:Name="Rec_Level_Meter" Height="105" Width="26" Margin="61,192,713,116" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
-            <TextBlock x:Name="Rec_Level_Meter_Value" Height="48" TextWrapping="Wrap" Text="0" Width="42" Margin="100,228,658,137" FontSize="18"/>
+            <ProgressBar x:Name="Rec_Level_Meter" Height="105" Width="26" Margin="534,68,240,240" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
+            <TextBlock x:Name="Rec_Level_Meter_Value" Height="48" TextWrapping="Wrap" Text="0" Width="42" Margin="574,111,184,254" FontSize="18"/>
 
 
             <TextBox x:Name="Rec_time" TextWrapping="Wrap" Text="10" Width="120" Margin="636,144,37.6,233" Height="23"/>
