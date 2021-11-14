@@ -41,22 +41,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <local:NotifyGrid Grid.Row="0" x:Name="DisplaySignalArea" Grid.Column="1" Grid.ColumnSpan="10" SizeChanged="DisplaySignalArea_SizeChanged">
+            <local:NotifyGrid Grid.Row="0" x:Name="DisplaySignalArea" Grid.Column="1" Grid.ColumnSpan="10" >
                 <Viewbox Stretch="Uniform">
-                    <Canvas
-                    Name="DisplaySignalCanvas"
-                    Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
-                    Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}">
-                        <Rectangle
-                        Name="DisplaySignalCanvas_"
-                        Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
+                    <Image
+                        x:Name="waveDisplay"
                         Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
-                        >
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{StaticResource wisteria}" />
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Canvas>
+                        Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left">
+                        <Image.RenderTransform>
+                            <TranslateTransform X="0.13" Y="0.0353"/>
+                        </Image.RenderTransform>
+                    </Image>
                 </Viewbox>
             </local:NotifyGrid>
             <Grid Name="DisplaySignalLevelMeterArea"  Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Center">
@@ -67,16 +63,6 @@
             </Grid>
 
             <rg:ResponsiveGrid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
-                <Border rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="10" Height="Auto">
-                    <Label Content="numbering" Height="30"/>
-                </Border>
-                <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                    <Label Content="_" Height="30" />
-                </Border>
-                <Border rg:ResponsiveGrid.SM="4">
-                    <Label FontSize="50" Grid.Row="0">Page1</Label>
-                    <!---->
-                </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <Button Click="Button_Click">ページ２へ遷移</Button>
                 </Border>
@@ -87,11 +73,14 @@
                     </WrapPanel>
                 </Border>
                 <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                    <Fluent:Spinner KeyTip="P1"
+                    <WrapPanel Orientation="Horizontal">
+                        <Label Content="numbering" Height="30"/>
+                        <Fluent:Spinner KeyTip="P1"
                                      Name="Rec_numbering_filename"
                                      Increment="1"
                                      Format="0"
                                      />
+                    </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="2" >
                     <WrapPanel Orientation="Horizontal">
@@ -111,7 +100,7 @@
                     </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
-                   <!--<local:ToggleSwitch/>-->
+                    <!--<local:ToggleSwitch/>-->
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
