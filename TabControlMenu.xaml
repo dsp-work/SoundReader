@@ -1,44 +1,44 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style x:Key="Menu" TargetType="TabItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Border Name="Border" CornerRadius="0" Margin="0" Padding="8,3,0,3" BorderThickness="0" Background="Transparent" Width="160">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Name="TextBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" FontSize="18" FontFamily="Yu Gothic" Foreground="white" Grid.Column="1" FontWeight="Bold">
-                <ContentPresenter ContentSource="Header"/>
-                            </TextBlock>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#555"/>
-                            <Setter TargetName="Border" Property="BorderThickness" Value="0,0,2,0"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#cd3f37"/>
-                            <Setter TargetName="TextBlock" Property="Foreground" Value="#cd3f37"/>
-                            <Setter TargetName="Border" Property="Opacity" Value="0.9"/>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="Border" Property="Background" Value="transparent"/>
-                            <Setter TargetName="TextBlock" Property="Foreground" Value="#ccc"/>
-                            <Setter TargetName="Border" Property="BorderThickness" Value="0,0,0,0"/>
-                            <Setter TargetName="Border" Property="Opacity" Value="0.8"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Cursor" Value="Hand"/>
-                            <Setter TargetName="Border" Property="Background" Value="#555"/>
-                            <Setter TargetName="Border" Property="Opacity" Value="1.0"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    
+	<Style x:Key="Menu" TargetType="TabItem">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TabItem">
+					<Border Name="Border" CornerRadius="0" Margin="0" Padding="8,3,0,3" BorderThickness="0" Background="Transparent" Width="160">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="5"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<TextBlock Name="TextBlock" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" FontSize="18" FontFamily="Yu Gothic" Foreground="white" Grid.Column="1" FontWeight="Bold">
+								<ContentPresenter ContentSource="Header"/>
+							</TextBlock>
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="#555"/>
+							<Setter TargetName="Border" Property="BorderThickness" Value="0,0,2,0"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="#cd3f37"/>
+							<Setter TargetName="TextBlock" Property="Foreground" Value="#cd3f37"/>
+							<Setter TargetName="Border" Property="Opacity" Value="0.9"/>
+						</Trigger>
+						<Trigger Property="IsSelected" Value="False">
+							<Setter TargetName="Border" Property="Background" Value="transparent"/>
+							<Setter TargetName="TextBlock" Property="Foreground" Value="#ccc"/>
+							<Setter TargetName="Border" Property="BorderThickness" Value="0,0,0,0"/>
+							<Setter TargetName="Border" Property="Opacity" Value="0.8"/>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="Cursor" Value="Hand"/>
+							<Setter TargetName="Border" Property="Background" Value="#555"/>
+							<Setter TargetName="Border" Property="Opacity" Value="1.0"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
 </ResourceDictionary>
