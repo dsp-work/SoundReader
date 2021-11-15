@@ -111,7 +111,7 @@
                     </WrapPanel>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
-                   <!--<local:ToggleSwitch/>-->
+                    <!--<local:ToggleSwitch/>-->
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
