@@ -3,34 +3,107 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:rg="clr-namespace:SourceChord.ResponsiveGrid;assembly=ResponsiveGrid.Wpf"
       xmlns:local="clr-namespace:SoundReader"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Recorder">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-        <Label FontSize="50" Grid.Row="0">Page1</Label>
-        <Button Click="Button_Click" Margin="10,161,220,73">ページ２へ遷移</Button>
+            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
+                <Border
+                    Background="#333"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="#e8e8e8"
+                    Width="{Binding ElementName=TabMenu, Path=ActualWidth}"
+                    />
+                <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
+                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
+                    <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
+                    <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
+                    <TabItem Style="{StaticResource Menu}" Header="魚"/>
+                    <TabItem Style="{StaticResource Menu}" Header="肉"/>
+                    <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
+                    <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
+                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
+                    <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
+                </TabControl>
+            </Grid> 
+            
+            
+            <Grid Grid.Row="0" Name="DisplaySignalRow" Grid.ColumnSpan="12">
+                <StackPanel Orientation="Horizontal">
+                    <Canvas Height="{Binding ElementName=DisplaySignalRow, Path=ActualHeight}" Width="{Binding ElementName=DisplaySignalRow, Path=ActualWidth}">
+                        <Rectangle
+                        Width="{Binding ElementName=DisplaySignalRow, Path=ActualWidth}"
+                        Height="{Binding ElementName=DisplaySignalRow, Path=ActualHeight}"
+                        >
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{StaticResource wisteria}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Canvas>
+                    <ProgressBar x:Name="Rec_Level_Meter" MinWidth="20" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
+                    <TextBlock x:Name="Rec_Level_Meter_Value" TextWrapping="Wrap" Text="0" FontSize="18"/>
+                </StackPanel>
+            </Grid>
+            
+            <rg:ResponsiveGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="12" Margin="10" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
+                <Border rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="10" Height="Auto">
+                    <Label Content="numbering" Height="30"/>
+                </Border>
+                <Border Height="80" rg:ResponsiveGrid.SM="1" >
+                    <Label Content="_" Height="30" />
+                </Border>
+                <Border rg:ResponsiveGrid.SM="4">
+                    <Label FontSize="50" Grid.Row="0">Page1</Label>
+                    <!---->
+                </Border>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <Button Click="Button_Click">ページ２へ遷移</Button>
+                </Border>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <WrapPanel Orientation="Horizontal">
+                        <Label Content="Base file name : "/>
+                        <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120"/>
+                    </WrapPanel>
+                </Border>
+                <Border Height="80" rg:ResponsiveGrid.SM="1" >
+                    <TextBox x:Name="Rec_numbering_filename" TextWrapping="Wrap" Text="1" MinWidth="120"/>
+                </Border>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <Button x:Name="Rec_num_prev" Content="prev." Click="Rec_num_prev_Click"/>
+                </Border>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <Button x:Name="Rec_num_next" Content="next" Click="Rec_num_next_Click"/>
+                </Border>
+                <Border Height="80" rg:ResponsiveGrid.SM="1" >
+                    <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
+                </Border>
+                <Border Height="80" rg:ResponsiveGrid.SM="1" >
+                    <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
+                </Border>
+            </rg:ResponsiveGrid>
         </Grid>
-
-        <Grid Grid.Row="1">
-        <Label Content="Base file name" Height="30" Margin="470,185,232.6,185"/>
-        <Label Content="numbering" Height="30" Margin="636,185,80.6,185"/>
-        <Label Content="_" Height="30" Margin="605,211,170.6,159"/>
-        <TextBox x:Name="Rec_numbering_filename" Height="23" TextWrapping="Wrap" Text="1" Width="120" Margin="636,215,37.6,162" />
-        <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120" Margin="470,215,203.6,162"/>
-        <Button x:Name="Rec_num_prev" Content="prev." Width="51" Margin="636,243,106.6,137" Click="Rec_num_prev_Click"/>
-        <Button x:Name="Rec_num_next" Content="next" Width="51" Margin="705,243,37.6,137" Click="Rec_num_next_Click"/>
-
-        <Button x:Name="Rec_start" Content="Start" Width="75" Margin="509,349,209.6,26" Click="Rec_start_Click"/>
-        <Button x:Name="Rec_stop" Content="Stop" Width="75" Margin="636,349,82.6,26" Click="Rec_stop_Click" IsEnabled="False"/>
-        </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

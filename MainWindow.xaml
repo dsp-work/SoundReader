@@ -9,16 +9,13 @@
         Title="MainWindow" Height="550" Width="800">
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
-        <Color x:Key="light_green">#ccff66</Color>
-        <Color x:Key="scarlet">#d3381c</Color>
-        <Color x:Key="wisteria">#a15dc4</Color>
-        <Color x:Key="lilac">#7058a3</Color>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Fluent:Ribbon Grid.Row="0">
@@ -138,12 +135,10 @@
         <Grid Grid.Row="1">
             <Frame Name="frame" NavigationUIVisibility="Hidden"/>
 
-            <ProgressBar x:Name="Rec_Level_Meter" Height="105" Width="26" Margin="61,192,713,116" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
-            <TextBlock x:Name="Rec_Level_Meter_Value" Height="48" TextWrapping="Wrap" Text="0" Width="42" Margin="100,228,658,137" FontSize="18"/>
+        </Grid>
 
-
-
-            <Fluent:StatusBar Margin="0,379,-0.4,-2" Background="#FFBFE3FF" Height="20">
+        <Grid Grid.Row="2">
+            <Fluent:StatusBar Background="#FFBFE3FF">
                 <Fluent:StatusBarItem Title="Left placed item"
                           Value="150"
                           HorizontalAlignment="Left">
