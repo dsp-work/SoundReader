@@ -13,10 +13,16 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*" /><!--Tab control tuggle-->
-                <ColumnDefinition Width="*" /><!--contents area No.1--><!--Tub menu No.1-->
-                <ColumnDefinition Width="*" /><!--contents area No.2--><!--Tub menu No.2-->
-                <ColumnDefinition Width="*" /><!--contents area No.3-->
+                <ColumnDefinition Width="0.25*" />
+                <!--Tab control tuggle-->
+                <ColumnDefinition Width="*" />
+                <!--contents area No.1-->
+                <!--Tub menu No.1-->
+                <ColumnDefinition Width="*" />
+                <!--contents area No.2-->
+                <!--Tub menu No.2-->
+                <ColumnDefinition Width="*" />
+                <!--contents area No.3-->
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -25,50 +31,74 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" /><!--No.12-->
-                <ColumnDefinition Width="0.5*" MinWidth="10"/><!--scroll bar No.13-->
+                <ColumnDefinition Width="*" />
+                <!--No.12-->
+                <ColumnDefinition Width="0.25*" MinWidth="10"/>
+                <!--scroll bar No.13-->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
-                <Border
-                    Background="#333"
+            <Grid Name="TabMenuControler" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="2">
+                <Button>
+                    
+                </Button>
+            </Grid>
+
+            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1" Width="0">
+        
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.25*" />
+                    </Grid.ColumnDefinitions>
+           
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
+                    <Border
+                    Background="#FFBFE3FF"
                     BorderThickness="0,0,1,0"
-                    BorderBrush="#e8e8e8"
+                    BorderBrush="#000000"
                     Width="{Binding ElementName=TabMenu, Path=ActualWidth}"
                     />
-                <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
-                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
-                    <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
-                    <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
-                    <TabItem Style="{StaticResource Menu}" Header="魚"/>
-                    <TabItem Style="{StaticResource Menu}" Header="肉"/>
-                    <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
-                    <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
-                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
-                    <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
-                </TabControl>
-            </Grid> 
-            
-            
+                    <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
+                        <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
+                        <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
+                        <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
+                        <TabItem Style="{StaticResource Menu}" Header="魚"/>
+                        <TabItem Style="{StaticResource Menu}" Header="肉"/>
+                        <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
+                        <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
+                        <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
+                        <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
+                    </TabControl>
+                </Grid>
+                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="2">
+                    <Button>
+                        
+                    </Button>
+                </Grid>
+            </Grid>
+
+
             <local:NotifyGrid Grid.Row="0" x:Name="DisplaySignalArea" Grid.Column="1" Grid.ColumnSpan="10" SizeChanged="DisplaySignalArea_SizeChanged">
-                <Canvas
+                <Viewbox Stretch="Uniform">
+                    <Canvas
                     Name="DisplaySignalCanvas"
                     Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
                     Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}">
-                    <Rectangle
+                        <Rectangle
                         Name="DisplaySignalCanvas_"
                         Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
                         Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
                         >
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="{StaticResource wisteria}" />
-                        </Rectangle.Fill>
-                    </Rectangle>
-                </Canvas>
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{StaticResource wisteria}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Canvas>
+                </Viewbox>
             </local:NotifyGrid>
             <Grid Name="DisplaySignalLevelMeterArea"  Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" >
@@ -76,7 +106,7 @@
                     <TextBlock x:Name="Rec_Level_Meter_Value" TextWrapping="Wrap" Text="0" FontSize="18" />
                 </StackPanel>
             </Grid>
-            
+
             <rg:ResponsiveGrid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
                 <Border rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="10" Height="Auto">
                     <Label Content="numbering" Height="30"/>
@@ -98,7 +128,7 @@
                     </WrapPanel>
                 </Border>
                 <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                     <Fluent:Spinner KeyTip="P1"
+                    <Fluent:Spinner KeyTip="P1"
                                      Name="Rec_numbering_filename"
                                      Increment="1"
                                      Format="0"
@@ -109,6 +139,9 @@
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <Button x:Name="Rec_num_next" Content="next" Click="Rec_num_next_Click"/>
+                </Border>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <local:ToggleSwitch/>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
