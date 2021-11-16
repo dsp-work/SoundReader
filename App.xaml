@@ -6,6 +6,19 @@
     <Application.Resources>
         <!--color definitions-->
         <ResourceDictionary>
+            <Color x:Key="Normal">#d3d3d3</Color>
+            <Color x:Key="Active">#ffffff</Color>
+            <Color x:Key="Semiactive">#f8f8ff</Color>
+            <Color x:Key="Inactive">#c0c0c0</Color>
+            <Color x:Key="Highlight1">#a9a9a9</Color>
+            <Color x:Key="Highlight2">#808080</Color>
+            <Color x:Key="Highlight3">#696969</Color>
+            <Color x:Key="Accent">#4169e1</Color>
+            <Color x:Key="Accent_active">#0000cd</Color>
+            <Color x:Key="Accent_highlight">#00bfff</Color>
+
+
+
             <Color x:Key="light_green">#ccff66</Color>
             <Color x:Key="scarlet">#d3381c</Color>
             <Color x:Key="wisteria">#a15dc4</Color>
