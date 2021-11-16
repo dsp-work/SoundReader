@@ -69,7 +69,10 @@
                 </Button>
             </Grid>
             <Grid Grid.Column="1">
-                <TabControl Style="{DynamicResource Menu}"/>
+                
+                <TabControl Name="Content" TabStripPlacement="Left" BorderThickness="0">
+                    <TabItem Style="{DynamicResource Menu}"/>
+                </TabControl>
             </Grid>
             <Grid Grid.Column="2">
                 <Button>

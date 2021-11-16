@@ -41,47 +41,6 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Name="TabMenuControler" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="2">
-                <Button>
-                    
-                </Button>
-            </Grid>
-
-            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1" Width="0">
-        
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="0.25*" />
-                    </Grid.ColumnDefinitions>
-           
-                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
-                    <Border
-                    Background="#FFBFE3FF"
-                    BorderThickness="0,0,1,0"
-                    BorderBrush="#000000"
-                    Width="{Binding ElementName=TabMenu, Path=ActualWidth}"
-                    />
-                    <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
-                        <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
-                        <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
-                        <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
-                        <TabItem Style="{StaticResource Menu}" Header="魚"/>
-                        <TabItem Style="{StaticResource Menu}" Header="肉"/>
-                        <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
-                        <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
-                        <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
-                        <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
-                    </TabControl>
-                </Grid>
-                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="2">
-                    <Button>
-                        
-                    </Button>
-                </Grid>
-            </Grid>
-
-
             <local:NotifyGrid Grid.Row="0" x:Name="DisplaySignalArea" Grid.Column="1" Grid.ColumnSpan="10" SizeChanged="DisplaySignalArea_SizeChanged">
                 <Viewbox Stretch="Uniform">
                     <Canvas

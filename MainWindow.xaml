@@ -15,13 +15,38 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.25*" />
+            <!--Tab control tuggle-->
+            <ColumnDefinition Width="*" />
+            <!--contents area No.1-->
+            <!--Tub menu No.1-->
+            <ColumnDefinition Width="*" />
+            <!--contents area No.2-->
+            <!--Tub menu No.2-->
+            <ColumnDefinition Width="*" />
+            <!--contents area No.3-->
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <!--No.12-->
+            <ColumnDefinition Width="0.25*" MinWidth="10"/>
+            <!--scroll bar No.13-->
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Fluent:Ribbon Grid.Row="0">
+
+        <Fluent:Ribbon Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="14">
             <!--Backstage-->
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage>
@@ -71,7 +96,7 @@
                    KeyTip="SM"
                    Size="Small"
                    Icon="./image/icon_113430_256.png"/>
-                    
+
 
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox
@@ -135,12 +160,52 @@
 
         </Fluent:Ribbon>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="0">
             <Frame Name="frame" NavigationUIVisibility="Hidden"/>
-
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Column="0" Grid.Row="1" Panel.ZIndex="2">
+            <Button  Name="TabMenuControlerOpen" Click="Button_Tab_Open">
+
+            </Button>
+        </Grid>
+        <Grid Name="TabMenu" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="1" Width="Auto">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.25*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Panel.ZIndex="1">
+                <Border
+                    Background="#FFBFE3FF"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="#000000"
+                    Width="{Binding ElementName=TabMenu, Path=ActualWidth}"
+                    />
+                <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
+                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
+                    <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
+                    <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
+                    <TabItem Style="{StaticResource Menu}" Header="魚"/>
+                    <TabItem Style="{StaticResource Menu}" Header="肉"/>
+                    <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
+                    <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
+                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
+                    <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
+                </TabControl>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="0" Panel.ZIndex="2">
+                <Button Name="TabMenuControlerClose" Click="Button_Tab_Close">
+
+                </Button>
+            </Grid>
+        </Grid>
+
+
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="14">
             <Fluent:StatusBar Background="#FFBFE3FF">
                 <Fluent:StatusBarItem Title="Left placed item"
                           Value="150"
@@ -171,7 +236,7 @@
                           HorizontalAlignment="Left">
                     <TextBlock x:Name="Rec_bit" Text="" />
                 </Fluent:StatusBarItem>
-                
+
                 <Separator HorizontalAlignment="Left" />
 
                 <Fluent:StatusBarItem Title="Forth left placed item"
