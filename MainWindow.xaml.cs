@@ -1,26 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 using Fluent;
 
 using NAudio.Wave;
-using NAudio.Codecs;
 using NAudio.CoreAudioApi;
-
-using Microsoft.Kinect;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace SoundReader
@@ -50,7 +38,7 @@ namespace SoundReader
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
-
+            Tab_Close();
         }
 
         public List<string> GetDevices()
@@ -138,6 +126,25 @@ namespace SoundReader
         {
             Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
             frame.Source = uri;
+        }
+
+        private void Button_Tab_Open(object sender, RoutedEventArgs e)
+        {
+            TabMenu.Visibility = Visibility.Visible;
+            TabMenuControlerOpen.Visibility = Visibility.Hidden;
+            TabMenuControlerClose.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Tab_Close(object sender, RoutedEventArgs e)
+        {
+            Tab_Close();
+        }
+
+        private void Tab_Close()
+        {
+            TabMenu.Visibility = Visibility.Hidden;
+            TabMenuControlerOpen.Visibility = Visibility.Visible;
+            TabMenuControlerClose.Visibility = Visibility.Hidden;
         }
     }
 }
