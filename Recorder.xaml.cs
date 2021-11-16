@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.ComponentModel;
 
 using Fluent;
 
@@ -113,24 +113,21 @@ namespace SoundReader
             Rec_num_prev.IsEnabled = true;
             Rec_num_next.IsEnabled = true;
 
-
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+            Rec_numbering_filename.Value = Int32.Parse(Rec_numbering_filename.Text) + 1;
         }
 
         private void Rec_num_prev_Click(object sender, RoutedEventArgs e)
         {
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) - 1}";
+            //Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) - 1}";
         }
 
         private void Rec_num_next_Click(object sender, RoutedEventArgs e)
         {
-            Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
+           // Rec_numbering_filename.Text = $"{Int32.Parse(Rec_numbering_filename.Text) + 1}";
         }
 
         private void UpdateRecLevelMeter(object sender, WaveInEventArgs e)
         {
-            var mainWindow = (MainWindow)App.Current.MainWindow;
-
             var max = 0f;
             for (var i = 0; i < e.BytesRecorded; i += 2)
             {
@@ -149,11 +146,11 @@ namespace SoundReader
                     lv = (0.2 * Rec_Level_Meter.Value + 0.8 * current);
                     if (max >= 1.0)
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["scarlet"]);
                     }
                     else
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["light_green"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["light_green"]);
                     }
                 }
                 else
@@ -161,11 +158,11 @@ namespace SoundReader
                     lv = (0.8 * Rec_Level_Meter.Value + 0.2 * current);
                     if (max >= 1.0)
                     {
-                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)this.Resources["scarlet"]);
+                        Rec_Level_Meter.Foreground = new SolidColorBrush((Color)Application.Current.Resources["scarlet"]);
                     }
                     else
                     {
-                        var color = (Color)this.Resources["light_green"];
+                        var color = (Color)Application.Current.Resources["light_green"];
                         color.A = 150;
                         Rec_Level_Meter.Foreground = new SolidColorBrush(color);
                     }
@@ -174,24 +171,68 @@ namespace SoundReader
                 Rec_Level_Meter.Value = lv;
             });
         }
+
+        private void DisplaySignalArea_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            DisplaySignalArea.UpdateLayout();
+            DisplaySignalArea.InvalidateVisual();
+
+            DisplaySignalArea.ActualHeightValue = DisplaySignalArea.ActualHeight;
+            DisplaySignalArea.ActualWidthValue = DisplaySignalArea.ActualWidth;
+
+            DisplaySignalCanvas.Height = DisplaySignalArea.ActualHeight;
+            DisplaySignalCanvas.Width = DisplaySignalArea.ActualWidth;
+            DisplaySignalCanvas.UpdateLayout();
+            DisplaySignalCanvas.InvalidateVisual();
+
+            DisplaySignalCanvas_.Height = DisplaySignalArea.ActualHeight;
+            DisplaySignalCanvas_.Width = DisplaySignalArea.ActualWidth;
+            DisplaySignalCanvas_.UpdateLayout();
+            DisplaySignalCanvas_.InvalidateVisual();
+
+            this.InvalidateArrange();
+            this.InvalidateVisual();
+        }
     }
 
-    public class CanvasAutoSize : Canvas
+    public class NotifyGrid : Grid, INotifyPropertyChanged
     {
-        protected override System.Windows.Size MeasureOverride(System.Windows.Size constraint)
+        double actual_height;
+        double actual_width;
+
+        public double ActualHeightValue
         {
-            base.MeasureOverride(constraint);
-            double width = base
-                .InternalChildren
-                .OfType<UIElement>()
-                .Max(i => i.DesiredSize.Width + (double)i.GetValue(Canvas.LeftProperty));
+            get
+            {
+                return actual_height;
+            }
+            set
+            {
+                actual_height = value;
+                NotifyPropertyChanged("ActualHeightValue");
+            }
+        }
 
-            double height = base
-                .InternalChildren
-                .OfType<UIElement>()
-                .Max(i => i.DesiredSize.Height + (double)i.GetValue(Canvas.TopProperty));
+        public double ActualWidthValue
+        {
+            get
+            {
+                return actual_width;
+            }
+            set
+            {
+                actual_width = value;
+                NotifyPropertyChanged("ActualWidthValue");
+            }
+        }
 
-            return new Size(width, height);
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

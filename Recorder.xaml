@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:rg="clr-namespace:SourceChord.ResponsiveGrid;assembly=ResponsiveGrid.Wpf"
+      xmlns:Fluent="urn:fluent-ribbon" 
       xmlns:local="clr-namespace:SoundReader"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -12,6 +13,10 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" /><!--Tab control tuggle-->
+                <ColumnDefinition Width="*" /><!--contents area No.1--><!--Tub menu No.1-->
+                <ColumnDefinition Width="*" /><!--contents area No.2--><!--Tub menu No.2-->
+                <ColumnDefinition Width="*" /><!--contents area No.3-->
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -20,17 +25,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" /><!--No.12-->
+                <ColumnDefinition Width="0.5*" MinWidth="10"/><!--scroll bar No.13-->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
+            <Grid Name="TabMenu" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Panel.ZIndex="1">
                 <Border
                     Background="#333"
                     BorderThickness="0,0,1,0"
@@ -51,24 +54,30 @@
             </Grid> 
             
             
-            <Grid Grid.Row="0" Name="DisplaySignalRow" Grid.ColumnSpan="12">
-                <StackPanel Orientation="Horizontal">
-                    <Canvas Height="{Binding ElementName=DisplaySignalRow, Path=ActualHeight}" Width="{Binding ElementName=DisplaySignalRow, Path=ActualWidth}">
-                        <Rectangle
-                        Width="{Binding ElementName=DisplaySignalRow, Path=ActualWidth}"
-                        Height="{Binding ElementName=DisplaySignalRow, Path=ActualHeight}"
+            <local:NotifyGrid Grid.Row="0" x:Name="DisplaySignalArea" Grid.Column="1" Grid.ColumnSpan="10" SizeChanged="DisplaySignalArea_SizeChanged">
+                <Canvas
+                    Name="DisplaySignalCanvas"
+                    Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
+                    Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}">
+                    <Rectangle
+                        Name="DisplaySignalCanvas_"
+                        Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
+                        Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
                         >
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{StaticResource wisteria}" />
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Canvas>
-                    <ProgressBar x:Name="Rec_Level_Meter" MinWidth="20" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66"/>
-                    <TextBlock x:Name="Rec_Level_Meter_Value" TextWrapping="Wrap" Text="0" FontSize="18"/>
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource wisteria}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Canvas>
+            </local:NotifyGrid>
+            <Grid Name="DisplaySignalLevelMeterArea"  Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" >
+                    <ProgressBar x:Name="Rec_Level_Meter" MinWidth="20" Orientation="Vertical" SmallChange="0.01" Foreground="#FFCCFF66" />
+                    <TextBlock x:Name="Rec_Level_Meter_Value" TextWrapping="Wrap" Text="0" FontSize="18" />
                 </StackPanel>
             </Grid>
             
-            <rg:ResponsiveGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="12" Margin="10" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
+            <rg:ResponsiveGrid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
                 <Border rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="10" Height="Auto">
                     <Label Content="numbering" Height="30"/>
                 </Border>
@@ -89,7 +98,11 @@
                     </WrapPanel>
                 </Border>
                 <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                    <TextBox x:Name="Rec_numbering_filename" TextWrapping="Wrap" Text="1" MinWidth="120"/>
+                     <Fluent:Spinner KeyTip="P1"
+                                     Name="Rec_numbering_filename"
+                                     Increment="1"
+                                     Format="0"
+                                     />
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <Button x:Name="Rec_num_prev" Content="prev." Click="Rec_num_prev_Click"/>
@@ -97,11 +110,11 @@
                 <Border rg:ResponsiveGrid.SM="1" >
                     <Button x:Name="Rec_num_next" Content="next" Click="Rec_num_next_Click"/>
                 </Border>
-                <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                    <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
-                </Border>
-                <Border Height="80" rg:ResponsiveGrid.SM="1" >
-                    <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
+                <Border rg:ResponsiveGrid.SM="1" >
+                    <WrapPanel Orientation="Horizontal">
+                        <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
+                        <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
+                    </WrapPanel>
                 </Border>
             </rg:ResponsiveGrid>
         </Grid>
