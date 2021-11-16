@@ -207,8 +207,6 @@ namespace SoundReader
         }
         private void UpdateRecLevelMeter(object sender, WaveInEventArgs e)
         {
-            var mainWindow = (MainWindow)App.Current.MainWindow;
-
             var max = 0f;
             for (var i = 0; i < e.BytesRecorded; i += 2)
             {
@@ -243,7 +241,7 @@ namespace SoundReader
                     }
                     else
                     {
-                        var color = (Color)this.Resources["light_green"];
+                        var color = (Color)Application.Current.Resources["light_green"];
                         color.A = 150;
                         mainWindow.Rec_Level_Meter.Foreground = new SolidColorBrush(color);
                     }
@@ -251,6 +249,69 @@ namespace SoundReader
                 mainWindow.Rec_Level_Meter_Value.Text = lv.ToString("0");
                 mainWindow.Rec_Level_Meter.Value = lv;
             });
+        }
+
+        private void DisplaySignalArea_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            DisplaySignalArea.UpdateLayout();
+            DisplaySignalArea.InvalidateVisual();
+
+            DisplaySignalArea.ActualHeightValue = DisplaySignalArea.ActualHeight;
+            DisplaySignalArea.ActualWidthValue = DisplaySignalArea.ActualWidth;
+
+            DisplaySignalCanvas.Height = DisplaySignalArea.ActualHeight;
+            DisplaySignalCanvas.Width = DisplaySignalArea.ActualWidth;
+            DisplaySignalCanvas.UpdateLayout();
+            DisplaySignalCanvas.InvalidateVisual();
+
+            DisplaySignalCanvas_.Height = DisplaySignalArea.ActualHeight;
+            DisplaySignalCanvas_.Width = DisplaySignalArea.ActualWidth;
+            DisplaySignalCanvas_.UpdateLayout();
+            DisplaySignalCanvas_.InvalidateVisual();
+
+            this.InvalidateArrange();
+            this.InvalidateVisual();
+        }
+    }
+
+    public class NotifyGrid : Grid, INotifyPropertyChanged
+    {
+        double actual_height;
+        double actual_width;
+
+        public double ActualHeightValue
+        {
+            get
+            {
+                return actual_height;
+            }
+            set
+            {
+                actual_height = value;
+                NotifyPropertyChanged("ActualHeightValue");
+            }
+        }
+
+        public double ActualWidthValue
+        {
+            get
+            {
+                return actual_width;
+            }
+            set
+            {
+                actual_width = value;
+                NotifyPropertyChanged("ActualWidthValue");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

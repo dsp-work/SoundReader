@@ -50,12 +50,11 @@
                         Width="{Binding ElementName=DisplaySignalArea, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
                         Height="{Binding ElementName=DisplaySignalArea, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}"
                         >
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{StaticResource wisteria}" />
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Canvas>
-                </Viewbox>
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource wisteria}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Canvas>
             </local:NotifyGrid>
             <Grid Name="DisplaySignalLevelMeterArea"  Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" >
