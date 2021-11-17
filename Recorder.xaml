@@ -78,12 +78,20 @@
                     <!---->
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
-                    <Button Click="Button_Click">ページ２へ遷移</Button>
+                    <Button Click="Button_Click">ページ２へ遷移
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Accent}" />
+                        </Button.Background>
+                    </Button>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
                         <Label Content="Base file name : "/>
-                        <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120"/>
+                        <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120">
+                            <TextBox.Background>
+                                <SolidColorBrush Color="{StaticResource Accent}" />
+                            </TextBox.Background>
+                        </TextBox>
                     </WrapPanel>
                 </Border>
                 <Border Height="80" rg:ResponsiveGrid.SM="1" >
