@@ -115,8 +115,16 @@
                 </Border>
                 <Border rg:ResponsiveGrid.SM="1" >
                     <WrapPanel Orientation="Horizontal">
-                        <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
-                        <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
+                        <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click">
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Accent}" />
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False">
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Accent}" />
+                            </Button.Background>
+                        </Button>
                     </WrapPanel>
                 </Border>
             </rg:ResponsiveGrid>
