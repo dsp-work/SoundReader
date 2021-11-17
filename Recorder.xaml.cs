@@ -176,6 +176,7 @@ namespace SoundReader
 
                         // enable to be variable
                         Rec_start.IsEnabled = true;
+                        Rec_stop.IsEnabled = false;
                         mainWindow.audio_device_list.IsEnabled = true;
                         Rec_base_filename.IsEnabled = true;
                         Rec_numbering_filename.IsEnabled = true;
