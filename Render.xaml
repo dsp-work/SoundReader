@@ -8,6 +8,11 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Render">
 
+    <Page.Background>
+        <SolidColorBrush Color="{StaticResource Highlight1}" />
+    </Page.Background>
+
+
     <Grid>
         <Label Content="page2" HorizontalAlignment="Left" Margin="236,116,0,0" VerticalAlignment="Top" Height="38" Width="111"/>
 

@@ -9,6 +9,11 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Recorder">
+    
+    <Page.Background>
+        <SolidColorBrush Color="{StaticResource Highlight1}" />
+    </Page.Background>
+
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -88,9 +93,11 @@
                     <WrapPanel Orientation="Horizontal">
                         <Label Content="Base file name : "/>
                         <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120">
+                            <!--
                             <TextBox.Background>
                                 <SolidColorBrush Color="{StaticResource Accent}" />
                             </TextBox.Background>
+                            -->
                         </TextBox>
                     </WrapPanel>
                 </Border>
@@ -99,7 +106,11 @@
                                      Name="Rec_numbering_filename"
                                      Increment="1"
                                      Format="0"
-                                     />
+                                     >
+                        <Fluent:Spinner.Background>
+                            <SolidColorBrush Color="{StaticResource Accent}" />
+                        </Fluent:Spinner.Background>
+                    </Fluent:Spinner>
                 </Border>
                 <Border rg:ResponsiveGrid.SM="2" >
                     <WrapPanel Orientation="Horizontal">
