@@ -78,7 +78,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="録音" KeyTip="T2">
+            <Fluent:RibbonTabItem Header="録音" KeyTip="T2" Group="{Binding ElementName=TabContextRecording, Mode=OneWay}" Visibility="Collapsed">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
                    KeyTip="B">
@@ -117,7 +117,7 @@
 
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="再生" KeyTip="T3">
+            <Fluent:RibbonTabItem Header="再生" KeyTip="T3" Group="{Binding ElementName=TabContextRendering, Mode=OneWay}" Visibility="Collapsed">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
                    KeyTip="B"
@@ -155,8 +155,31 @@
 
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="定位" KeyTip="T3">
+            <Fluent:RibbonTabItem Header="定位" KeyTip="T3" Group="{Binding ElementName=TabContextTracking, Mode=OneWay}" Visibility="Collapsed">
             </Fluent:RibbonTabItem>
+            <!-- コンテキストタブグループの定義 -->
+            <Fluent:Ribbon.ContextualGroups>
+                <Fluent:RibbonContextualTabGroup x:Name="TabContextRecording"
+                                     BorderBrush="#FF9D00"
+                                     Background="#FF9D00"
+                                     Foreground="#D3691D"
+                                     Header="描画ツール"
+                                     Visibility="Visible" />
+
+                <Fluent:RibbonContextualTabGroup x:Name="TabContextRendering"
+                                     BorderBrush="#F2CB1D"
+                                     Background="#F2CB1D"
+                                     Foreground="#987715"
+                                     Header="表ツール"
+                                     Visibility="Visible" />
+
+                <Fluent:RibbonContextualTabGroup x:Name="TabContextTracking"
+                                     BorderBrush="#F2CB1D"
+                                     Background="#F2CB1D"
+                                     Foreground="#987715"
+                                     Header="表ツール"
+                                     Visibility="Visible" />
+            </Fluent:Ribbon.ContextualGroups>
 
         </Fluent:Ribbon>
 
