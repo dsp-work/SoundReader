@@ -165,7 +165,7 @@
         </Grid>
 
         <Grid Grid.Column="0" Grid.Row="1" Panel.ZIndex="2">
-            <Button  Name="TabMenuControlerOpen" Click="Button_Tab_Open">
+            <Button  Name="TabMenuControlerOpen" Click="Button_Tab_Open" MouseEnter="Button_Tab_Open">
 
             </Button>
         </Grid>
@@ -186,7 +186,7 @@
                     />
                 <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
                     <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
-                    <TabItem Style="{StaticResource Menu}" Header="Kinect Recording"/>
+                    <TabItem Style="{StaticResource Menu}" Header="Recording"/>
                     <TabItem Style="{StaticResource Menu}" Header="Wav再生"/>
                     <TabItem Style="{StaticResource Menu}" Header="定位"/>
                 </TabControl>
