@@ -422,10 +422,16 @@ namespace SoundReader
 
                         // Renormalize signal above noise floor to [0,1] range.
                         var next_energy = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
-                        if(next_energy >= 1.0 && )
+                        if (next_energy >= 1.0 && volume_warning == false)
+                        {
+                            MessageBox.Show("入力音声が録音可能なボリュームの上限を超えている可能性があります。デバイスのボリュームコントロールを確認してください。");
+                            this.energy[this.energyIndex] = 0.9999;
+                        }
+                        else if (next_energy >= 1.0 && volume_warning == true)
                         {
                             this.energy[this.energyIndex] = 0.9999;
-                        } else
+                        }
+                        else
                         {
                             this.energy[this.energyIndex] = next_energy;
                         }
