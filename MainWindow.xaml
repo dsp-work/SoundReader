@@ -235,7 +235,9 @@
 
         <Grid Grid.Column="0" Grid.Row="1" Panel.ZIndex="2">
             <Button  Name="TabMenuControlerOpen" Click="Button_Tab_Open">
-
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource Active}" />
+                </Button.Background>
             </Button>
         </Grid>
         <Grid Name="TabMenu" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="1" Width="Auto">
@@ -252,6 +254,11 @@
                     BorderBrush="#000000"
                     Width="Auto"
                     >
+                    <!--
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{StaticResource Active}" />
+                    </Border.BorderBrush>
+                    -->
                     <Border.Background>
                         <SolidColorBrush Color="{StaticResource Active}" />
                     </Border.Background>
@@ -275,7 +282,7 @@
             <Grid Grid.Column="2" Grid.Row="0" Panel.ZIndex="2">
                 <Button Name="TabMenuControlerClose" Click="Button_Tab_Close">
                     <Button.Background>
-                        <SolidColorBrush Color="{StaticResource Accent}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Button.Background>
                 </Button>
             </Grid>
