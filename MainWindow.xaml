@@ -78,7 +78,7 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="録音" KeyTip="T2" Group="{Binding ElementName=TabContextRecording, Mode=OneWay}" Visibility="Collapsed">
+            <Fluent:RibbonTabItem Header="録音" KeyTip="T2" Group="{Binding ElementName=TabContextRecording, Mode=OneWay}">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
                    KeyTip="B">
@@ -117,7 +117,7 @@
 
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="再生" KeyTip="T3" Group="{Binding ElementName=TabContextRendering, Mode=OneWay}" Visibility="Collapsed">
+            <Fluent:RibbonTabItem Header="再生" KeyTip="T3" Group="{Binding ElementName=TabContextRendering, Mode=OneWay}">
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
                    KeyTip="B"
@@ -155,7 +155,7 @@
 
             </Fluent:RibbonTabItem>
 
-            <Fluent:RibbonTabItem Header="定位" KeyTip="T3" Group="{Binding ElementName=TabContextTracking, Mode=OneWay}" Visibility="Collapsed">
+            <Fluent:RibbonTabItem Header="定位" KeyTip="T3" Group="{Binding ElementName=TabContextTracking, Mode=OneWay}" >
             </Fluent:RibbonTabItem>
             <!-- コンテキストタブグループの定義 -->
             <Fluent:Ribbon.ContextualGroups>
@@ -163,28 +163,28 @@
                                      BorderBrush="#FF9D00"
                                      Background="#FF9D00"
                                      Foreground="#D3691D"
-                                     Header="描画ツール"
+                                     Header="デバイスコントロール"
                                      Visibility="Visible" />
 
                 <Fluent:RibbonContextualTabGroup x:Name="TabContextRendering"
                                      BorderBrush="#F2CB1D"
                                      Background="#F2CB1D"
                                      Foreground="#987715"
-                                     Header="表ツール"
+                                     Header="デバイスコントロール"
                                      Visibility="Visible" />
 
                 <Fluent:RibbonContextualTabGroup x:Name="TabContextTracking"
                                      BorderBrush="#F2CB1D"
                                      Background="#F2CB1D"
                                      Foreground="#987715"
-                                     Header="表ツール"
+                                     Header="デバイスコントロール"
                                      Visibility="Visible" />
             </Fluent:Ribbon.ContextualGroups>
 
         </Fluent:Ribbon>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="14" Panel.ZIndex="0">
-            <Frame Name="frame" NavigationUIVisibility="Hidden"/>
+            <Frame Name="frame" NavigationUIVisibility="Hidden" MouseEnter="frame_MouseEnter"/>
         </Grid>
 
         <Grid Grid.Column="0" Grid.Row="1" Panel.ZIndex="2">
@@ -209,8 +209,8 @@
                     />
                 <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
                     <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
-                    <TabItem Style="{StaticResource Menu}" Header="Recording"/>
-                    <TabItem Style="{StaticResource Menu}" Header="Wav再生"/>
+                    <TabItem Style="{StaticResource Menu}" Header="Recording" MouseLeftButtonUp="TabMenuRecorder" />
+                    <TabItem Style="{StaticResource Menu}" Header="Wav再生" MouseLeftButtonUp="TabMenuRender"/>
                     <TabItem Style="{StaticResource Menu}" Header="定位"/>
                 </TabControl>
             </Grid>
