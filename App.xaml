@@ -17,8 +17,6 @@
             <Color x:Key="Accent_active">#0000cd</Color>
             <Color x:Key="Accent_highlight">#00bfff</Color>
 
-
-
             <Color x:Key="light_green">#ccff66</Color>
             <Color x:Key="scarlet">#d3381c</Color>
             <Color x:Key="wisteria">#a15dc4</Color>

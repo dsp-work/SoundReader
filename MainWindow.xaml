@@ -12,10 +12,10 @@
                      >
     <Fluent:RibbonWindow.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
-        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Background" Color="{StaticResource Accent_highlight}"></SolidColorBrush>
-        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Background"  Color="{StaticResource Accent_highlight}"></SolidColorBrush>
-        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background"  Color="{StaticResource Accent_highlight}"></SolidColorBrush>
-        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonWindow.TitleBackground"  Color="{StaticResource Accent_highlight}"></SolidColorBrush>
+        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Background" Color="{StaticResource Active}"></SolidColorBrush>
+        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Background"  Color="{StaticResource Active}"></SolidColorBrush>
+        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background"  Color="{StaticResource Active}"></SolidColorBrush>
+        <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonWindow.TitleBackground"  Color="{StaticResource Active}"></SolidColorBrush>
     </Fluent:RibbonWindow.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -59,7 +59,7 @@
             <!--Tabs-->
             <Fluent:RibbonTabItem Header="HOME" KeyTip="T1">
                 <Fluent:RibbonTabItem.Background>
-                    <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                    <SolidColorBrush Color="{StaticResource Active}" />
                 </Fluent:RibbonTabItem.Background>
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
@@ -70,7 +70,7 @@
                    Click="Button_Click_Workin"
                    LargeIcon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -80,7 +80,7 @@
                    Click="Button_Click_Render"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -89,18 +89,18 @@
                    Size="Small"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
                     <Fluent:RibbonGroupBox.Background>
-                        <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Fluent:RibbonGroupBox.Background>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
 
             <Fluent:RibbonTabItem Header="録音" KeyTip="T2">
                 <Fluent:RibbonTabItem.Background>
-                    <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                    <SolidColorBrush Color="{StaticResource Active}" />
                 </Fluent:RibbonTabItem.Background>
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
@@ -110,7 +110,7 @@
                    KeyTip="BI"
                    LargeIcon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -119,7 +119,7 @@
                    Size="Middle"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -128,12 +128,12 @@
                    Size="Small"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
                     <Fluent:RibbonGroupBox.Background>
-                        <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Fluent:RibbonGroupBox.Background>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox
@@ -147,13 +147,13 @@
                           DropDownOpened="audio_device_list_DropDownOpened"
                           IsReadOnly="True"/>
                         <ListBox.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </ListBox.Background>
 
                     </ListBox>
                     <Slider x:Name="Input_volume" ValueChanged="Slider_ValueChanged" Maximum="1" SmallChange="0.01" MinWidth="100"/>
                     <Fluent:RibbonGroupBox.Background>
-                        <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Fluent:RibbonGroupBox.Background>
 
 
@@ -163,7 +163,7 @@
 
             <Fluent:RibbonTabItem Header="再生" KeyTip="T3">
                 <Fluent:RibbonTabItem.Background>
-                    <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                    <SolidColorBrush Color="{StaticResource Active}" />
                 </Fluent:RibbonTabItem.Background>
                 <Fluent:RibbonGroupBox
                    Header="ボタン"
@@ -174,7 +174,7 @@
                    KeyTip="BI"
                    LargeIcon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -183,7 +183,7 @@
                    Size="Middle"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
@@ -192,12 +192,12 @@
                    Size="Small"
                    Icon="./image/icon_113430_256.png">
                         <Fluent:Button.Background>
-                            <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                            <SolidColorBrush Color="{StaticResource Active}" />
                         </Fluent:Button.Background>
                     </Fluent:Button>
 
                     <Fluent:RibbonGroupBox.Background>
-                        <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Fluent:RibbonGroupBox.Background>
 
                 </Fluent:RibbonGroupBox>
@@ -214,7 +214,7 @@
                    Click="Button_Click_Recorder"
                    LargeIcon="./image/icon_113430_256.png"/>
                     <Fluent:RibbonGroupBox.Background>
-                        <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </Fluent:RibbonGroupBox.Background>
 
                 </Fluent:RibbonGroupBox>
@@ -223,7 +223,7 @@
 
             <Fluent:RibbonTabItem Header="定位" KeyTip="T3">
                 <Fluent:RibbonTabItem.Background>
-                    <SolidColorBrush Color="{StaticResource Accent_highlight}" />
+                    <SolidColorBrush Color="{StaticResource Active}" />
                 </Fluent:RibbonTabItem.Background>
             </Fluent:RibbonTabItem>
 
@@ -265,7 +265,7 @@
                 </Border>
                 <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
                     <TabControl.Background>
-                        <SolidColorBrush Color="{StaticResource Accent}" />
+                        <SolidColorBrush Color="{StaticResource Active}" />
                     </TabControl.Background>
 
                     <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>

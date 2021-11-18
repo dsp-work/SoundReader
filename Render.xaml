@@ -9,7 +9,7 @@
       Title="Render">
 
     <Page.Background>
-        <SolidColorBrush Color="{StaticResource Highlight1}" />
+        <SolidColorBrush Color="{StaticResource Active}" />
     </Page.Background>
 
 
