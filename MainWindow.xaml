@@ -186,14 +186,9 @@
                     />
                 <TabControl TabStripPlacement="Left" BorderThickness="0" Grid.ColumnSpan="2">
                     <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="5"/>
-                    <TabItem Style="{StaticResource Menu}" IsSelected="True" Header="本日のおすすめ"/>
-                    <TabItem Style="{StaticResource Menu}" Header="おつまみ"/>
-                    <TabItem Style="{StaticResource Menu}" Header="魚"/>
-                    <TabItem Style="{StaticResource Menu}" Header="肉"/>
-                    <TabItem Style="{StaticResource Menu}" Header="飯・麺"/>
-                    <TabItem Style="{StaticResource Menu}" Header="ドリンク"/>
-                    <TabItem Style="{StaticResource Menu}" IsEnabled="False" Height="20"/>
-                    <TabItem Style="{StaticResource Menu}" Header="注文履歴"/>
+                    <TabItem Style="{StaticResource Menu}" Header="Kinect Recording"/>
+                    <TabItem Style="{StaticResource Menu}" Header="Wav再生"/>
+                    <TabItem Style="{StaticResource Menu}" Header="定位"/>
                 </TabControl>
             </Grid>
             <Grid Grid.Column="2" Grid.Row="0" Panel.ZIndex="2">
