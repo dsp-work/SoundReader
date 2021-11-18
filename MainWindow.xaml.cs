@@ -34,7 +34,7 @@ namespace SoundReader
         int audio_in_device_id = -1;
         public IWaveIn waveIn;
         public WaveFileWriter waveWriter;
-        public string save_dir = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        public string save_dir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         public MainWindow()
         {
