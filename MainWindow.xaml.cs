@@ -44,14 +44,13 @@ namespace SoundReader
             List<string> lt = GetDevices();
             audio_device_list.ItemsSource = lt.ToArray();
 
-            Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
-            frame.Source = uri;
-
             // Input volume slider initialize
             MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
             MMDevice device = DevEnum.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             Input_volume.Value = device.AudioEndpointVolume.MasterVolumeLevelScalar;
             Tab_Close();
+
+            NavigatePageRecorder();
         }
 
         public List<string> GetDevices()
@@ -129,7 +128,16 @@ namespace SoundReader
             }
         }
 
-        private void Button_Click_Render(object sender, RoutedEventArgs e)
+        // page control
+        private void NavigatePageRecorder()
+        {
+            RibbonContextAllControl(Visibility.Collapsed);
+            TabContextRecording.Visibility = Visibility.Visible;
+            Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
+            frame.Source = uri;
+        }
+
+        private void NavigatePageRender()
         {
             RibbonContextAllControl(Visibility.Collapsed);
             TabContextRendering.Visibility = Visibility.Visible;
@@ -139,17 +147,37 @@ namespace SoundReader
 
         private void Button_Click_Recorder(object sender, RoutedEventArgs e)
         {
-            RibbonContextAllControl(Visibility.Collapsed);
-            TabContextRecording.Visibility = Visibility.Visible;
-            Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
-            frame.Source = uri;
+            NavigatePageRecorder();
+        }
+
+        private void Button_Click_Render(object sender, RoutedEventArgs e)
+        {
+            NavigatePageRender();
         }
 
         private void RibbonContextAllControl(Visibility visibility)
         {
             TabContextRecording.Visibility = visibility;
-            TabContextRendering.Visibility = Visibility;
+            TabContextRendering.Visibility = visibility;
             TabContextTracking.Visibility = visibility;
+        }
+
+        private void TabMenuRecorder(object sender, MouseButtonEventArgs e)
+        {
+            NavigatePageRecorder();
+        }
+
+        private void TabMenuRender(object sender, MouseButtonEventArgs e)
+        {
+            NavigatePageRender();
+        }
+
+        // Tab menu control
+        private void Tab_Close()
+        {
+            TabMenu.Visibility = Visibility.Hidden;
+            TabMenuControlerOpen.Visibility = Visibility.Visible;
+            TabMenuControlerClose.Visibility = Visibility.Hidden;
         }
 
         private void Button_Tab_Open(object sender, RoutedEventArgs e)
@@ -164,11 +192,9 @@ namespace SoundReader
             Tab_Close();
         }
 
-        private void Tab_Close()
+        private void frame_MouseEnter(object sender, MouseEventArgs e)
         {
-            TabMenu.Visibility = Visibility.Hidden;
-            TabMenuControlerOpen.Visibility = Visibility.Visible;
-            TabMenuControlerClose.Visibility = Visibility.Hidden;
+            Tab_Close();
         }
     }
 }

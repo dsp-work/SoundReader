@@ -63,16 +63,13 @@
             </Grid>
 
             <rg:ResponsiveGrid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="12" MaxDivision="12" BreakPoints="345, 567, 789" Panel.ZIndex="0">
-                <Border rg:ResponsiveGrid.SM="1" >
-                    <Button Click="Button_Click">ページ２へ遷移</Button>
-                </Border>
-                <Border rg:ResponsiveGrid.SM="1" >
+                <Border rg:ResponsiveGrid.SM="2" >
                     <WrapPanel Orientation="Horizontal">
                         <Label Content="Base file name : "/>
                         <TextBox x:Name="Rec_base_filename" Height="23" TextWrapping="Wrap" Text="Sound" Width="120"/>
                     </WrapPanel>
                 </Border>
-                <Border Height="80" rg:ResponsiveGrid.SM="1" >
+                <Border Height="80" rg:ResponsiveGrid.SM="2" >
                     <WrapPanel Orientation="Horizontal">
                         <Label Content="numbering" Height="30"/>
                         <Fluent:Spinner KeyTip="P1"
@@ -88,7 +85,7 @@
                         <Label Name="time_count" Content="0" FontSize="48"/>
                     </WrapPanel>
                 </Border>
-                <Border rg:ResponsiveGrid.SM="1" >
+                <Border rg:ResponsiveGrid.SM="3" >
                     <WrapPanel Orientation="Horizontal">
                         <Label Content="recording time length[s] : "/>
                         <Fluent:Spinner KeyTip="P1"
@@ -102,8 +99,8 @@
                 <Border rg:ResponsiveGrid.SM="1" >
                     <!--<local:ToggleSwitch/>-->
                 </Border>
-                <Border rg:ResponsiveGrid.SM="1" >
-                    <WrapPanel Orientation="Horizontal">
+                <Border rg:ResponsiveGrid.SM="2" >
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button x:Name="Rec_start" Content="Start" Width="75" Click="Rec_start_Click"/>
                         <Button x:Name="Rec_stop" Content="Stop" Width="75" Click="Rec_stop_Click" IsEnabled="False"/>
                     </WrapPanel>
