@@ -131,14 +131,25 @@ namespace SoundReader
 
         private void Button_Click_Render(object sender, RoutedEventArgs e)
         {
+            RibbonContextAllControl(Visibility.Collapsed);
+            TabContextRendering.Visibility = Visibility.Visible;
             Uri uri = new Uri("/Render.xaml", UriKind.Relative);
             frame.Source = uri;
         }
 
         private void Button_Click_Recorder(object sender, RoutedEventArgs e)
         {
+            RibbonContextAllControl(Visibility.Collapsed);
+            TabContextRecording.Visibility = Visibility.Visible;
             Uri uri = new Uri("/Recorder.xaml", UriKind.Relative);
             frame.Source = uri;
+        }
+
+        private void RibbonContextAllControl(Visibility visibility)
+        {
+            TabContextRecording.Visibility = visibility;
+            TabContextRendering.Visibility = Visibility;
+            TabContextTracking.Visibility = visibility;
         }
 
         private void Button_Tab_Open(object sender, RoutedEventArgs e)
