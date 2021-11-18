@@ -42,6 +42,7 @@ namespace SoundReader
         private const int EnergyBitmapWidth = 780;
         private const int EnergyBitmapHeight = 195;
         private int newEnergyAvailable;
+        bool volume_warning = false;
 
         // for render
         private Stopwatch lastEnergyRefreshTime = new Stopwatch();
@@ -142,7 +143,10 @@ namespace SoundReader
             Rec_numbering_filename.IsEnabled = false;
             Rec_time.IsEnabled = false;
 
+            // itnitialize parameter
             this.newEnergyAvailable = 0;
+            this.volume_warning = false;
+
             if (Rec_time.Value == 0)
             {
                 Task.Run(() =>
@@ -417,7 +421,14 @@ namespace SoundReader
                         double amplitude = Math.Log(meanSquare) / Math.Log(int.MaxValue);
 
                         // Renormalize signal above noise floor to [0,1] range.
-                        this.energy[this.energyIndex] = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
+                        var next_energy = Math.Max(0, amplitude - EnergyNoiseFloor) / (1 - EnergyNoiseFloor);
+                        if(next_energy >= 1.0 && )
+                        {
+                            this.energy[this.energyIndex] = 0.9999;
+                        } else
+                        {
+                            this.energy[this.energyIndex] = next_energy;
+                        }
                         this.energyIndex = (this.energyIndex + 1) % this.energy.Length;
 
                         this.accumulatedSquareSum = 0;
